@@ -6,9 +6,8 @@ export default function About() {
       <Head>
         <title>About</title>
         <meta name="description" content="Information about the creator" />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div>About</div>
+      <h1>About</h1>
     </div>
   );
 }
