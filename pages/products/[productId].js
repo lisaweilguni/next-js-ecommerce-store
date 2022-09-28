@@ -2,7 +2,8 @@ import { css } from '@emotion/react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import { products } from '../../database/products';
+import { productsDatabase } from '../../database/products';
+import { getParsedCookie, setStringifiedCookie } from '../../utils/cookies';
 
 const productStyles = css`
   border-radius: 15px;
@@ -21,7 +22,7 @@ export default function Product(props) {
     return (
       <div>
         <Head>
-          <title>Animal not found</title>
+          <title>Product not found</title>
           <meta name="description" content="Animal not found" />
         </Head>
         <h1>{props.error}</h1>
@@ -58,6 +59,61 @@ export default function Product(props) {
         </Link>
 
         <div>Price: {props.product.price} $</div>
+        <button
+          onClick={() => {
+            const currentCookieValue = getParsedCookie('amount');
+
+            if (!currentCookieValue) {
+              setStringifiedCookie('amount', [
+                { id: props.product.id, amount: 1 },
+              ]);
+              return;
+            }
+
+            const foundCookie = currentCookieValue.find(
+              (cookieProductObject) =>
+                cookieProductObject.id === props.product.id,
+            );
+
+            if (!foundCookie) {
+              currentCookieValue.push({ id: props.product.id, amount: 1 });
+            } else {
+              foundCookie.amount++;
+            }
+
+            setStringifiedCookie('amount', currentCookieValue);
+          }}
+        >
+          +
+        </button>
+        <button
+          onClick={() => {
+            const currentCookieValue = getParsedCookie('amount');
+
+            if (!currentCookieValue) {
+              setStringifiedCookie('amount', [
+                { id: props.product.id, amount: -1 },
+              ]);
+              return;
+            }
+
+            const foundCookie = currentCookieValue.find(
+              (cookieProductObject) =>
+                cookieProductObject.id === props.product.id,
+            );
+
+            if (!foundCookie) {
+              currentCookieValue.push({ id: props.product.id, amount: -1 });
+            } else {
+              foundCookie.amount--;
+            }
+
+            setStringifiedCookie('amount', currentCookieValue);
+          }}
+        >
+          {' '}
+          -{' '}
+        </button>
       </div>
     </div>
   );
@@ -66,6 +122,8 @@ export default function Product(props) {
 export function getServerSideProps(context) {
   // Retrieve animal id from url
   const productId = parseInt(context.query.productId);
+
+  const products = productsDatabase;
 
   // Finding the product
   const foundProduct = products.find((product) => {

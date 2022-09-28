@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import { products } from '../../database/products';
+import { productsDatabase } from '../../database/products';
 
 const productStyles = css`
   border-radius: 15px;
@@ -44,6 +44,7 @@ export default function Products(props) {
             </Link>
 
             <div>Price: {product.price} $</div>
+            <div>Amount: {product.amount}</div>
           </div>
         );
       })}
@@ -51,13 +52,27 @@ export default function Products(props) {
   );
 }
 
-export function getServerSideProps() {
+export function getServerSideProps(context) {
+  console.log(context.req.cookies.amount);
+
+  // get the cookies from the request object and parse it if is not undefined
+  const parsedCookies = context.req.cookies.amount
+    ? JSON.parse(context.req.cookies.amount)
+    : [];
+
+  // loop over the database and add a new property called stars with either the value in the cookies or 0
+  const products = productsDatabase.map((product) => {
+    return {
+      ...product,
+      amount:
+        parsedCookies.find(
+          (cookieProductObject) => product.id === cookieProductObject.id,
+        )?.amount || 0,
+    };
+  });
+
   return {
-    // Anything that you write in this props object
-    // will become the props that are passed to
-    // the `Products` page component above
     props: {
-      // Name of prop: value
       products: products,
     },
   };

@@ -1,4 +1,5 @@
 import { css, Global } from '@emotion/react';
+import CookieBanner from '../components/CookieBanner';
 import Layout from '../components/Layout';
 
 function MyApp({ Component, pageProps }) {
@@ -18,6 +19,7 @@ function MyApp({ Component, pageProps }) {
           }
         `}
       />
+      <CookieBanner />
       <Layout>
         {/*
           The "Component" component refers to

@@ -1,4 +1,4 @@
-export const products = [
-  { id: 1, name: 'Riva', price: 25 },
-  { id: 2, name: 'Patelli', price: 28 },
+export const productsDatabase = [
+  { id: 1, name: 'Riva', price: 250 },
+  { id: 2, name: 'Patelli', price: 280 },
 ];
