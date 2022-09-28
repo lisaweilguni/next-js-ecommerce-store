@@ -37,8 +37,8 @@ export default function Products(props) {
                 <Image
                   src={`/${product.id}-${product.name.toLowerCase()}.jpeg`}
                   alt=""
-                  width="150"
-                  height="150"
+                  width="240"
+                  height="240"
                 />
               </a>
             </Link>

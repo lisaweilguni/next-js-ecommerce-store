@@ -9,7 +9,7 @@ export default function Home() {
         <meta name="description" content="Overview of the store" />
       </Head>
       <h1>Home</h1>
-      <Image src="/1-riva.jpeg" alt="Riva bike" width="300" height="300" />
+      <Image src="/1-riva.jpeg" alt="Riva bike" width="350" height="350" />
     </div>
   );
 }

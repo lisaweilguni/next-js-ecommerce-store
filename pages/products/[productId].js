@@ -52,8 +52,8 @@ export default function Product(props) {
                 props.product.id
               }-${props.product.name.toLowerCase()}.jpeg`}
               alt=""
-              width="150"
-              height="150"
+              width="240"
+              height="240"
             />
           </a>
         </Link>
@@ -120,7 +120,7 @@ export default function Product(props) {
 }
 
 export function getServerSideProps(context) {
-  // Retrieve animal id from url
+  // Retrieving product id from url
   const productId = parseInt(context.query.productId);
 
   const products = productsDatabase;
@@ -130,6 +130,7 @@ export function getServerSideProps(context) {
     return product.id === productId;
   });
 
+  // Handling error if product id does not exist
   if (typeof foundProduct === 'undefined') {
     context.res.statusCode = 404;
     return {
@@ -139,6 +140,7 @@ export function getServerSideProps(context) {
     };
   }
 
+  // this will be passed to the component above as props
   return {
     props: {
       product: foundProduct,

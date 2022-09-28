@@ -7,5 +7,5 @@ const footerStyles = css`
 `;
 
 export default function Footer() {
-  return <footer css={footerStyles}>All rights reserved.</footer>;
+  return <footer css={footerStyles}>© Lisa Weilguni | 2022</footer>;
 }

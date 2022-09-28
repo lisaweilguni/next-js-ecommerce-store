@@ -19,7 +19,6 @@ function MyApp({ Component, pageProps }) {
           }
         `}
       />
-      <CookieBanner />
       <Layout>
         {/*
           The "Component" component refers to
@@ -27,6 +26,7 @@ function MyApp({ Component, pageProps }) {
         */}
         <Component {...pageProps} />
       </Layout>
+      <CookieBanner />
     </>
   );
 }
