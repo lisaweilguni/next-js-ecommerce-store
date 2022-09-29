@@ -4,6 +4,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { productsDatabase } from '../../database/products';
 
+const productLayoutStyles = css`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 40px;
+  row-gap: 40px;
+  margin-top: 40px;
+`;
+
 const productStyles = css`
   border-radius: 15px;
   border: 1px solid #ccc;
@@ -11,8 +19,31 @@ const productStyles = css`
   h2 {
     margin-top: 0;
   }
-  & + & {
-    margin-top: 25px;
+`;
+
+const productInfoSectionStyles = css`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
+const viewProductButtonStyles = css`
+  border: 1px solid black;
+  border-radius: 15px;
+  padding: 5px;
+  width: 150px;
+  text-align: center;
+  font-size: 13px;
+  text-decoration: none;
+  color: black;
+`;
+
+const h1Styles = css``;
+
+const h2Styles = css`
+  a {
+    text-decoration: none;
+    color: black;
   }
 `;
 
@@ -23,31 +54,45 @@ export default function Products(props) {
         <title>Products</title>
         <meta name="description" content="Overview of products" />
       </Head>
-      <h1>Products</h1>
+      <h1 css={h1Styles}>Bicycles</h1>
 
-      {props.products.map((product) => {
-        return (
-          <div key={`product-${product.id}`} css={productStyles}>
-            <h2>
-              <Link href={`/products/${product.id}`}>{product.name}</Link>
-            </h2>
+      <div css={productLayoutStyles}>
+        {props.products.map((product) => {
+          return (
+            <div key={`product-${product.id}`} css={productStyles}>
+              <h2 css={h2Styles}>
+                <Link href={`/products/${product.id}`}>
+                  <a>{product.name}</a>
+                </Link>
+              </h2>
 
-            <Link href={`/products/${product.id}`}>
-              <a>
-                <Image
-                  src={`/${product.id}-${product.name.toLowerCase()}.jpeg`}
-                  alt=""
-                  width="240"
-                  height="240"
-                />
-              </a>
-            </Link>
-
-            <div>Price: {product.price} $</div>
-            <div>Amount: {product.amount}</div>
-          </div>
-        );
-      })}
+              <Link href={`/products/${product.id}`}>
+                <a data-test-id={`product-${product.id}`}>
+                  <Image
+                    src={`/${product.id}-${product.name.toLowerCase()}.jpeg`}
+                    alt=""
+                    width="362.5"
+                    height="259"
+                  />
+                </a>
+              </Link>
+              <div css={productInfoSectionStyles}>
+                <div>Price: EUR {product.price}</div>
+                <div>Amount: {product.amount}</div>
+                <Link href={`/products/${product.id}`}>
+                  <a
+                    href={`/products/${product.id}`}
+                    data-test-id={`product-${product.id}`}
+                    css={viewProductButtonStyles}
+                  >
+                    VIEW PRODUCT
+                  </a>
+                </Link>
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }

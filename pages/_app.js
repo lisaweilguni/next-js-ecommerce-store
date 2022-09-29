@@ -7,15 +7,20 @@ function MyApp({ Component, pageProps }) {
     <>
       <Global
         styles={css`
-          html,
-          body {
-            padding: 0;
-            font-family: Inter, -apple-system, BlinkMacSystemFont, Segoe UI,
-              Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
-              Helvetica Neue, sans-serif;
-          }
-          * {
+          *,
+          *::before,
+          *::after {
             box-sizing: border-box;
+          }
+          body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+              Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
+              sans-serif;
+            background-color: white;
+            color: #202020;
+            margin: 0;
+            line-height: 20px;
+            font-size: 16px;
           }
         `}
       />

@@ -6,9 +6,12 @@ import { productsDatabase } from '../../database/products';
 import { getParsedCookie, setStringifiedCookie } from '../../utils/cookies';
 
 const productStyles = css`
+  display: flex;
+  flex-direction: row;
   border-radius: 15px;
   border: 1px solid #ccc;
   padding: 20px;
+  gap: 40px;
   h2 {
     margin-top: 0;
   }
@@ -17,6 +20,32 @@ const productStyles = css`
   }
 `;
 
+const productInfoStyles = css`
+  width: 40%;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+`;
+
+const imageSectionStyles = css`
+  a {
+    color: black;
+    text-decoration: none;
+  }
+`;
+
+const plusMinusSectionStyles = css`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+`;
+
+const productPriceStyles = css`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+`;
 export default function Product(props) {
   if (props.error) {
     return (
@@ -38,82 +67,93 @@ export default function Product(props) {
           <title>{props.product.name}</title>
           <meta name="description" content={props.product.name} />
         </Head>
-        <h2>{props.product.name}</h2>
-        <h2>
+
+        <div css={imageSectionStyles}>
+          <Link href="/products">⬅ All bicycles</Link>
           <Link href={`/products/${props.product.id}`}>
-            {props.product.name}
+            <a>
+              <Image
+                src={`/${
+                  props.product.id
+                }-${props.product.name.toLowerCase()}.jpeg`}
+                alt=""
+                width="725"
+                height="518"
+                data-test-id="product-image"
+              />
+            </a>
           </Link>
-        </h2>
+        </div>
 
-        <Link href={`/products/${props.product.id}`}>
-          <a>
-            <Image
-              src={`/${
-                props.product.id
-              }-${props.product.name.toLowerCase()}.jpeg`}
-              alt=""
-              width="240"
-              height="240"
-            />
-          </a>
-        </Link>
+        <div css={productInfoStyles}>
+          <h1>{props.product.name}</h1>
+          <div css={productPriceStyles}>
+            <div>EUR</div>
+            <div data-test-id="product-price">{props.product.price}</div>
+          </div>
+          <div>🟢 In stock, ready to ship</div>
+          <button data-test-id="product-add-to-cart">ADD TO CART</button>
+          <div css={plusMinusSectionStyles}>
+            <button
+              data-test-id="product-quantity"
+              onClick={() => {
+                const currentCookieValue = getParsedCookie('amount');
 
-        <div>Price: {props.product.price} $</div>
-        <button
-          onClick={() => {
-            const currentCookieValue = getParsedCookie('amount');
+                if (!currentCookieValue) {
+                  setStringifiedCookie('amount', [
+                    { id: props.product.id, amount: 1 },
+                  ]);
+                  return;
+                }
 
-            if (!currentCookieValue) {
-              setStringifiedCookie('amount', [
-                { id: props.product.id, amount: 1 },
-              ]);
-              return;
-            }
+                const foundCookie = currentCookieValue.find(
+                  (cookieProductObject) =>
+                    cookieProductObject.id === props.product.id,
+                );
 
-            const foundCookie = currentCookieValue.find(
-              (cookieProductObject) =>
-                cookieProductObject.id === props.product.id,
-            );
+                if (!foundCookie) {
+                  currentCookieValue.push({ id: props.product.id, amount: 1 });
+                } else {
+                  foundCookie.amount++;
+                }
 
-            if (!foundCookie) {
-              currentCookieValue.push({ id: props.product.id, amount: 1 });
-            } else {
-              foundCookie.amount++;
-            }
+                setStringifiedCookie('amount', currentCookieValue);
+              }}
+            >
+              +
+            </button>
+            <div>0</div>
+            <button
+              data-test-id="product-quantity"
+              onClick={() => {
+                const currentCookieValue = getParsedCookie('amount');
 
-            setStringifiedCookie('amount', currentCookieValue);
-          }}
-        >
-          +
-        </button>
-        <button
-          onClick={() => {
-            const currentCookieValue = getParsedCookie('amount');
+                if (!currentCookieValue) {
+                  setStringifiedCookie('amount', [
+                    { id: props.product.id, amount: -1 },
+                  ]);
+                  return;
+                }
 
-            if (!currentCookieValue) {
-              setStringifiedCookie('amount', [
-                { id: props.product.id, amount: -1 },
-              ]);
-              return;
-            }
+                const foundCookie = currentCookieValue.find(
+                  (cookieProductObject) =>
+                    cookieProductObject.id === props.product.id,
+                );
 
-            const foundCookie = currentCookieValue.find(
-              (cookieProductObject) =>
-                cookieProductObject.id === props.product.id,
-            );
+                if (!foundCookie) {
+                  currentCookieValue.push({ id: props.product.id, amount: -1 });
+                } else {
+                  foundCookie.amount--;
+                }
 
-            if (!foundCookie) {
-              currentCookieValue.push({ id: props.product.id, amount: -1 });
-            } else {
-              foundCookie.amount--;
-            }
-
-            setStringifiedCookie('amount', currentCookieValue);
-          }}
-        >
-          {' '}
-          -{' '}
-        </button>
+                setStringifiedCookie('amount', currentCookieValue);
+              }}
+            >
+              {' '}
+              -{' '}
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
