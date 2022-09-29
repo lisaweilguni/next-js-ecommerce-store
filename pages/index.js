@@ -12,8 +12,8 @@ export default function Home() {
       <Image
         src="/1-mercier.jpeg"
         alt="Mercier bike"
-        width="725"
-        height="518"
+        width="652.5"
+        height="466.2"
       />
     </div>
   );

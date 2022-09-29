@@ -46,6 +46,27 @@ const productPriceStyles = css`
   flex-direction: row;
   gap: 10px;
 `;
+
+const addToCartButtonStyles = css`
+  padding: 15px 10px;
+  border: 0.18em solid grey;
+  border-radius: 4px;
+  background-color: grey;
+  -webkit-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
+  text-decoration: none;
+  color: white;
+  font-size: 16px;
+  text-align: center;
+  cursor: pointer;
+
+  &:hover {
+    background-color: white;
+    border: 0.18em solid grey;
+    color: grey;
+  }
+`;
+
 export default function Product(props) {
   if (props.error) {
     return (
@@ -92,16 +113,44 @@ export default function Product(props) {
             <div data-test-id="product-price">{props.product.price}</div>
           </div>
           <div>🟢 In stock, ready to ship</div>
-          <button data-test-id="product-add-to-cart">ADD TO CART</button>
+          <button
+            css={addToCartButtonStyles}
+            data-test-id="product-add-to-cart"
+            onClick={() => {
+              const currentCookieValue = getParsedCookie('quantity');
+
+              if (!currentCookieValue) {
+                setStringifiedCookie('quantity', [
+                  { id: props.product.id, quantity: 1 },
+                ]);
+                return;
+              }
+
+              const foundCookie = currentCookieValue.find(
+                (cookieProductObject) =>
+                  cookieProductObject.id === props.product.id,
+              );
+
+              if (!foundCookie) {
+                currentCookieValue.push({ id: props.product.id, quantity: 1 });
+              } else {
+                foundCookie.quantity++;
+              }
+
+              setStringifiedCookie('quantity', currentCookieValue);
+            }}
+          >
+            ADD TO CART
+          </button>
           <div css={plusMinusSectionStyles}>
             <button
               data-test-id="product-quantity"
               onClick={() => {
-                const currentCookieValue = getParsedCookie('amount');
+                const currentCookieValue = getParsedCookie('quantity');
 
                 if (!currentCookieValue) {
-                  setStringifiedCookie('amount', [
-                    { id: props.product.id, amount: 1 },
+                  setStringifiedCookie('quantity', [
+                    { id: props.product.id, quantity: 1 },
                   ]);
                   return;
                 }
@@ -112,25 +161,28 @@ export default function Product(props) {
                 );
 
                 if (!foundCookie) {
-                  currentCookieValue.push({ id: props.product.id, amount: 1 });
+                  currentCookieValue.push({
+                    id: props.product.id,
+                    quantity: 1,
+                  });
                 } else {
-                  foundCookie.amount++;
+                  foundCookie.quantity++;
                 }
 
-                setStringifiedCookie('amount', currentCookieValue);
+                setStringifiedCookie('quantity', currentCookieValue);
               }}
             >
               +
             </button>
-            <div>0</div>
+            <div>{props.product.quantity}</div>
             <button
               data-test-id="product-quantity"
               onClick={() => {
-                const currentCookieValue = getParsedCookie('amount');
+                const currentCookieValue = getParsedCookie('quantity');
 
                 if (!currentCookieValue) {
-                  setStringifiedCookie('amount', [
-                    { id: props.product.id, amount: -1 },
+                  setStringifiedCookie('quantity', [
+                    { id: props.product.id, quantity: -1 },
                   ]);
                   return;
                 }
@@ -141,12 +193,15 @@ export default function Product(props) {
                 );
 
                 if (!foundCookie) {
-                  currentCookieValue.push({ id: props.product.id, amount: -1 });
-                } else {
-                  foundCookie.amount--;
+                  currentCookieValue.push({
+                    id: props.product.id,
+                    quantity: -1,
+                  });
+                } else if (foundCookie.quantity > 0) {
+                  foundCookie.quantity--;
                 }
 
-                setStringifiedCookie('amount', currentCookieValue);
+                setStringifiedCookie('quantity', currentCookieValue);
               }}
             >
               {' '}
@@ -160,10 +215,24 @@ export default function Product(props) {
 }
 
 export function getServerSideProps(context) {
+  console.log('cookies', context.req.cookies.quantity);
+
+  const parsedCookies = context.req.cookies.quantity
+    ? JSON.parse(context.req.cookies.quantity)
+    : [];
+
+  const products = productsDatabase.map((product) => {
+    return {
+      ...product,
+      quantity:
+        parsedCookies.find(
+          (cookieProductObject) => product.id === cookieProductObject.id,
+        )?.quantity || 0,
+    };
+  });
+
   // Retrieving product id from url
   const productId = parseInt(context.query.productId);
-
-  const products = productsDatabase;
 
   // Finding the product
   const foundProduct = products.find((product) => {

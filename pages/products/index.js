@@ -29,7 +29,7 @@ const productInfoSectionStyles = css`
 
 const viewProductButtonStyles = css`
   border: 1px solid black;
-  border-radius: 15px;
+  border-radius: 4px;
   padding: 5px;
   width: 150px;
   text-align: center;
@@ -78,7 +78,7 @@ export default function Products(props) {
               </Link>
               <div css={productInfoSectionStyles}>
                 <div>Price: EUR {product.price}</div>
-                <div>Amount: {product.amount}</div>
+                {/* <div>Amount: {product.amount}</div> */}
                 <Link href={`/products/${product.id}`}>
                   <a
                     href={`/products/${product.id}`}
@@ -97,24 +97,26 @@ export default function Products(props) {
   );
 }
 
-export function getServerSideProps(context) {
-  console.log(context.req.cookies.amount);
+export function getServerSideProps() {
+  // console.log(context.req.cookies.amount);
 
-  // get the cookies from the request object and parse it if is not undefined
-  const parsedCookies = context.req.cookies.amount
-    ? JSON.parse(context.req.cookies.amount)
-    : [];
+  // // get the cookies from the request object and parse it if is not undefined
+  // const parsedCookies = context.req.cookies.amount
+  //   ? JSON.parse(context.req.cookies.amount)
+  //   : [];
 
-  // loop over the database and add a new property called stars with either the value in the cookies or 0
-  const products = productsDatabase.map((product) => {
-    return {
-      ...product,
-      amount:
-        parsedCookies.find(
-          (cookieProductObject) => product.id === cookieProductObject.id,
-        )?.amount || 0,
-    };
-  });
+  // // loop over the database and add a new property called stars with either the value in the cookies or 0
+  // const products = productsDatabase.map((product) => {
+  //   return {
+  //     ...product,
+  //     amount:
+  //       parsedCookies.find(
+  //         (cookieProductObject) => product.id === cookieProductObject.id,
+  //       )?.amount || 0,
+  //   };
+  // });
+
+  const products = productsDatabase;
 
   return {
     props: {

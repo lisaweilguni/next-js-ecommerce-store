@@ -47,7 +47,7 @@ export default function Header() {
           </Link>
           <Link href="/about">About</Link>
           <Link href="/cart">
-            <a>
+            <a data-test-id="cart-link">
               <div css={cartSymbolStyles}>
                 <Image
                   src="/shopping-cart.jpeg"
@@ -55,7 +55,7 @@ export default function Header() {
                   width="20"
                   height="20"
                 />
-                <span>0</span>
+                <span data-test-id="cart-count">0</span>
               </div>
             </a>
           </Link>
