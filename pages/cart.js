@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import { productsDatabase } from '../database/products';
+import { productsDatabase } from '../database/productsDatabase';
 
 const cartPageStyles = css`
   display: flex;
@@ -147,14 +147,8 @@ export default function Cart(props) {
       <div css={checkoutBoxStyles}>
         <div>Total:</div>
         <div data-test-id="cart-total">Price</div>
-        <Link href="/checkout">
-          <a
-            data-test-id="cart-checkout"
-            href="/checkout"
-            css={checkoutProductButtonStyles}
-          >
-            CHECKOUT
-          </a>
+        <Link href="/checkout" data-test-id="cart-checkout">
+          <a css={checkoutProductButtonStyles}>CHECKOUT</a>
         </Link>
       </div>
     </div>

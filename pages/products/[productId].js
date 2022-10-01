@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import { productsDatabase } from '../../database/products';
+import { getProductById } from '../../database/products';
 import { getParsedCookie, setStringifiedCookie } from '../../utils/cookies';
 
 const productStyles = css`
@@ -214,30 +214,30 @@ export default function Product(props) {
   );
 }
 
-export function getServerSideProps(context) {
-  console.log('cookies', context.req.cookies.quantity);
+export async function getServerSideProps(context) {
+  // const parsedCookies = context.req.cookies.quantity
+  //   ? JSON.parse(context.req.cookies.quantity)
+  //   : [];
 
-  const parsedCookies = context.req.cookies.quantity
-    ? JSON.parse(context.req.cookies.quantity)
-    : [];
-
-  const products = productsDatabase.map((product) => {
-    return {
-      ...product,
-      quantity:
-        parsedCookies.find(
-          (cookieProductObject) => product.id === cookieProductObject.id,
-        )?.quantity || 0,
-    };
-  });
+  // const products = productsDatabase.map((product) => {
+  //   return {
+  //     ...product,
+  //     quantity:
+  //       parsedCookies.find(
+  //         (cookieProductObject) => product.id === cookieProductObject.id,
+  //       )?.quantity || 0,
+  //   };
+  // });
 
   // Retrieving product id from url
   const productId = parseInt(context.query.productId);
 
   // Finding the product
-  const foundProduct = products.find((product) => {
-    return product.id === productId;
-  });
+  // const foundProduct = products.find((animal) => {
+  //   return animal.id === productId;
+  // });
+
+  const foundProduct = await getProductById(productId);
 
   // Handling error if product id does not exist
   if (typeof foundProduct === 'undefined') {
