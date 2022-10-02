@@ -10,8 +10,6 @@ import { sql } from './connect';
 //   { id: 6, name: 'Olympia', price: 1999 },
 // ];
 
-type Nullable<T> = T | null;
-
 export type Product = {
   id: number;
   name: string;
