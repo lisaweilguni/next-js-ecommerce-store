@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import { productsDatabase } from '../database/productsDatabase';
+import { getProducts } from '../database/products';
 
 const cartPageStyles = css`
   display: flex;
@@ -155,14 +155,16 @@ export default function Cart(props) {
   );
 }
 
-export function getServerSideProps(context) {
+export async function getServerSideProps(context) {
   // get the cookies from the request object and parse it if is not undefined
   const parsedCookies = context.req.cookies.quantity
     ? JSON.parse(context.req.cookies.quantity)
     : [];
 
+  const products = await getProducts();
+
   // get the quantity property for every product
-  const productsWithQuantityProperty = productsDatabase.map((product) => {
+  const productsWithQuantityProperty = products.map((product) => {
     return {
       ...product,
       quantity:

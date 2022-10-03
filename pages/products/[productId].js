@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState } from 'react';
 import { getProductById } from '../../database/products';
 import { getParsedCookie, setStringifiedCookie } from '../../utils/cookies';
 
@@ -68,6 +69,8 @@ const addToCartButtonStyles = css`
 `;
 
 export default function Product(props) {
+  // const [quantity, setQuantity] = useState(props.product.quantity);
+
   if (props.error) {
     return (
       <div>
@@ -142,39 +145,8 @@ export default function Product(props) {
           >
             ADD TO CART
           </button>
+
           <div css={plusMinusSectionStyles}>
-            <button
-              data-test-id="product-quantity"
-              onClick={() => {
-                const currentCookieValue = getParsedCookie('quantity');
-
-                if (!currentCookieValue) {
-                  setStringifiedCookie('quantity', [
-                    { id: props.product.id, quantity: 1 },
-                  ]);
-                  return;
-                }
-
-                const foundCookie = currentCookieValue.find(
-                  (cookieProductObject) =>
-                    cookieProductObject.id === props.product.id,
-                );
-
-                if (!foundCookie) {
-                  currentCookieValue.push({
-                    id: props.product.id,
-                    quantity: 1,
-                  });
-                } else {
-                  foundCookie.quantity++;
-                }
-
-                setStringifiedCookie('quantity', currentCookieValue);
-              }}
-            >
-              +
-            </button>
-            <div>{props.product.quantity}</div>
             <button
               data-test-id="product-quantity"
               onClick={() => {
@@ -202,10 +174,47 @@ export default function Product(props) {
                 }
 
                 setStringifiedCookie('quantity', currentCookieValue);
+                props.setQuantity(foundCookie.quantity);
               }}
             >
               {' '}
               -{' '}
+            </button>
+
+            {/* <div>{props.product.quantity}</div> */}
+            <div>{props.quantity}</div>
+
+            <button
+              data-test-id="product-quantity"
+              onClick={() => {
+                const currentCookieValue = getParsedCookie('quantity');
+
+                if (!currentCookieValue) {
+                  setStringifiedCookie('quantity', [
+                    { id: props.product.id, quantity: 1 },
+                  ]);
+                  return;
+                }
+
+                const foundCookie = currentCookieValue.find(
+                  (cookieProductObject) =>
+                    cookieProductObject.id === props.product.id,
+                );
+
+                if (!foundCookie) {
+                  currentCookieValue.push({
+                    id: props.product.id,
+                    quantity: 1,
+                  });
+                } else {
+                  foundCookie.quantity++;
+                }
+
+                setStringifiedCookie('quantity', currentCookieValue);
+                props.setQuantity(foundCookie.quantity);
+              }}
+            >
+              +
             </button>
           </div>
         </div>
@@ -215,29 +224,24 @@ export default function Product(props) {
 }
 
 export async function getServerSideProps(context) {
-  // const parsedCookies = context.req.cookies.quantity
-  //   ? JSON.parse(context.req.cookies.quantity)
-  //   : [];
-
-  // const products = productsDatabase.map((product) => {
-  //   return {
-  //     ...product,
-  //     quantity:
-  //       parsedCookies.find(
-  //         (cookieProductObject) => product.id === cookieProductObject.id,
-  //       )?.quantity || 0,
-  //   };
-  // });
+  const parsedCookies = context.req.cookies.quantity
+    ? JSON.parse(context.req.cookies.quantity)
+    : [];
 
   // Retrieving product id from url
   const productId = parseInt(context.query.productId);
 
-  // Finding the product
-  // const foundProduct = products.find((animal) => {
-  //   return animal.id === productId;
-  // });
-
+  // Get product from database
   const foundProduct = await getProductById(productId);
+
+  // Add quantity property to product
+  const foundProductWithQuantity = {
+    ...foundProduct,
+    quantity:
+      parsedCookies.find(
+        (cookieProductObject) => productId === cookieProductObject.id,
+      )?.quantity || 1,
+  };
 
   // Handling error if product id does not exist
   if (typeof foundProduct === 'undefined') {
@@ -252,7 +256,7 @@ export async function getServerSideProps(context) {
   // this will be passed to the component above as props
   return {
     props: {
-      product: foundProduct,
+      product: foundProductWithQuantity,
     },
   };
 }

@@ -34,7 +34,7 @@ const logoStyles = css`
   margin-left: 75px;
 `;
 
-export default function Header() {
+export default function Header({ quantity, setQuantity }) {
   return (
     <header>
       <nav css={headerStyles}>
@@ -55,7 +55,7 @@ export default function Header() {
                   width="20"
                   height="20"
                 />
-                <span data-test-id="cart-count">0</span>
+                <span data-test-id="cart-count">{quantity}</span>
               </div>
             </a>
           </Link>

@@ -1,3 +1,4 @@
+import { productionBrowserSourceMaps } from '../next.config';
 import { sql } from './connect';
 
 // Now we are getting this data from the database
@@ -30,5 +31,27 @@ export async function getProductById(id: number) {
     SELECT * FROM products WHERE id = ${id}
   `;
 
+  return product;
+}
+
+export async function deleteProductById(id: number) {
+  const [product] = await sql<Product[]>`
+    DELETE FROM
+      products
+    WHERE
+      id = ${id}
+    RETURNING *
+  `;
+  return product;
+}
+
+export async function updateProductById(id: number) {
+  const [product] = await sql<Product[]>`
+    DELETE FROM
+      products
+    WHERE
+      id = ${id}
+    RETURNING *
+  `;
   return product;
 }
