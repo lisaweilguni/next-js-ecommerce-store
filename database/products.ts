@@ -1,4 +1,3 @@
-import { productionBrowserSourceMaps } from '../next.config';
 import { sql } from './connect';
 
 // Now we are getting this data from the database

@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { createDecipheriv } from 'crypto';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -69,8 +70,6 @@ const addToCartButtonStyles = css`
 `;
 
 export default function Product(props) {
-  // const [quantity, setQuantity] = useState(props.product.quantity);
-
   if (props.error) {
     return (
       <div>
@@ -83,6 +82,10 @@ export default function Product(props) {
       </div>
     );
   }
+
+  const foundCookie = props.cart?.find(
+    (cookieProductObject) => cookieProductObject.id === props.product.id,
+  );
 
   return (
     <div>
@@ -129,18 +132,11 @@ export default function Product(props) {
                 return;
               }
 
-              const foundCookie = currentCookieValue.find(
-                (cookieProductObject) =>
-                  cookieProductObject.id === props.product.id,
-              );
-
               if (!foundCookie) {
                 currentCookieValue.push({ id: props.product.id, quantity: 1 });
               } else {
                 foundCookie.quantity++;
               }
-
-              setStringifiedCookie('quantity', currentCookieValue);
             }}
           >
             ADD TO CART
@@ -150,22 +146,18 @@ export default function Product(props) {
             <button
               data-test-id="product-quantity"
               onClick={() => {
-                const currentCookieValue = getParsedCookie('quantity');
-
-                if (!currentCookieValue) {
-                  setStringifiedCookie('quantity', [
-                    { id: props.product.id, quantity: -1 },
-                  ]);
+                if (!props.cart) {
+                  props.setCart([{ id: props.product.id, quantity: -1 }]);
                   return;
                 }
 
-                const foundCookie = currentCookieValue.find(
-                  (cookieProductObject) =>
-                    cookieProductObject.id === props.product.id,
-                );
+                // const foundCookie = props.cart?.find(
+                //   (cookieProductObject) =>
+                //     cookieProductObject.id === props.product.id,
+                // );
 
                 if (!foundCookie) {
-                  currentCookieValue.push({
+                  props.cart.push({
                     id: props.product.id,
                     quantity: -1,
                   });
@@ -173,36 +165,26 @@ export default function Product(props) {
                   foundCookie.quantity--;
                 }
 
-                setStringifiedCookie('quantity', currentCookieValue);
-                props.setQuantity(foundCookie.quantity);
+                const newQuantity = [...props.cart];
+                props.setCart(newQuantity);
               }}
             >
               {' '}
               -{' '}
             </button>
 
-            {/* <div>{props.product.quantity}</div> */}
-            <div>{props.quantity}</div>
+            <div>{foundCookie ? foundCookie.quantity : 1}</div>
 
             <button
               data-test-id="product-quantity"
               onClick={() => {
-                const currentCookieValue = getParsedCookie('quantity');
-
-                if (!currentCookieValue) {
-                  setStringifiedCookie('quantity', [
-                    { id: props.product.id, quantity: 1 },
-                  ]);
+                if (!props.cart) {
+                  props.setCart([{ id: props.product.id, quantity: 2 }]);
                   return;
                 }
 
-                const foundCookie = currentCookieValue.find(
-                  (cookieProductObject) =>
-                    cookieProductObject.id === props.product.id,
-                );
-
                 if (!foundCookie) {
-                  currentCookieValue.push({
+                  props.cart.push({
                     id: props.product.id,
                     quantity: 1,
                   });
@@ -210,8 +192,9 @@ export default function Product(props) {
                   foundCookie.quantity++;
                 }
 
-                setStringifiedCookie('quantity', currentCookieValue);
-                props.setQuantity(foundCookie.quantity);
+                const newQuantity = [...props.cart];
+                props.setCart(newQuantity);
+                console.log(foundCookie.quantity);
               }}
             >
               +
@@ -224,24 +207,11 @@ export default function Product(props) {
 }
 
 export async function getServerSideProps(context) {
-  const parsedCookies = context.req.cookies.quantity
-    ? JSON.parse(context.req.cookies.quantity)
-    : [];
-
   // Retrieving product id from url
   const productId = parseInt(context.query.productId);
 
   // Get product from database
   const foundProduct = await getProductById(productId);
-
-  // Add quantity property to product
-  const foundProductWithQuantity = {
-    ...foundProduct,
-    quantity:
-      parsedCookies.find(
-        (cookieProductObject) => productId === cookieProductObject.id,
-      )?.quantity || 1,
-  };
 
   // Handling error if product id does not exist
   if (typeof foundProduct === 'undefined') {
@@ -256,7 +226,36 @@ export async function getServerSideProps(context) {
   // this will be passed to the component above as props
   return {
     props: {
-      product: foundProductWithQuantity,
+      product: foundProduct,
     },
   };
 }
+
+// const parsedCookies = context.req.cookies.quantity
+//   ? JSON.parse(context.req.cookies.quantity)
+//   : [];
+
+// // Retrieving product id from url
+// const productId = parseInt(context.query.productId);
+
+// // Get product from database
+// const foundProduct = await getProductById(productId);
+
+// // Add quantity property to product
+// const foundProductWithQuantity = {
+//   ...foundProduct,
+//   quantity:
+//     parsedCookies.find(
+//       (cookieProductObject) => productId === cookieProductObject.id,
+//     )?.quantity || 1,
+// };
+
+// // Handling error if product id does not exist
+// if (typeof foundProduct === 'undefined') {
+//   context.res.statusCode = 404;
+//   return {
+//     props: {
+//       error: 'Product not found',
+//     },
+//   };
+// }

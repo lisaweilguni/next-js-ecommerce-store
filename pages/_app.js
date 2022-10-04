@@ -1,35 +1,27 @@
 import { css, Global } from '@emotion/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CookieBanner from '../components/CookieBanner';
 import Layout from '../components/Layout';
 import { getParsedCookie, setStringifiedCookie } from '../utils/cookies';
 
 function MyApp({ Component, pageProps }) {
-  const [quantity, setQuantity] = useState(1);
+  // Define state for quantity count in cart
+  const [cart, setCart] = useState();
 
-  // // getting the value of the cookie stars
-  // const currentCookieValue = getParsedCookie('stars');
+  // Get cookies and set state on first render
+  useEffect(() => {
+    const currentCookieValue = getParsedCookie('cart');
+    if (currentCookieValue) {
+      setCart(currentCookieValue);
+    }
+  }, []);
 
-  // // if there is no cookie we initialize the value with a 1
-  // if (!currentCookieValue) {
-  //   setStringifiedCookie('stars', [{ id: props.singleFruit.id, stars: 1 }]);
-  //   return;
-  // }
-
-  // // find the object that match the id of the page
-  // const foundCookie = currentCookieValue.find(
-  //   (cookieFruitObject) => cookieFruitObject.id === props.singleFruit.id,
-  // );
-
-  // // if a object is not found i add a new object
-  // if (!foundCookie) {
-  //   currentCookieValue.push({ id: props.singleFruit.id, stars: 1 });
-  // } else {
-  //   // if a object is found i update the stars
-  //   foundCookie.stars++;
-  // }
-  // // set the new value of the cookie
-  // setStringifiedCookie('stars', currentCookieValue);
+  // Get state and set cookies every time "cart" changes
+  useEffect(() => {
+    if (typeof cart !== 'undefined') {
+      setStringifiedCookie('cart', cart);
+    }
+  }, [cart]);
 
   return (
     <>
@@ -57,11 +49,7 @@ function MyApp({ Component, pageProps }) {
           The "Component" component refers to
           the current page that is being rendered
         */}
-        <Component
-          {...pageProps}
-          quantity={quantity}
-          setQuantity={setQuantity}
-        />
+        <Component {...pageProps} cart={cart} setCart={setCart} />
       </Layout>
       <CookieBanner />
     </>

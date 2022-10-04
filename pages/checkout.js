@@ -2,7 +2,6 @@ import { css } from '@emotion/react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import { productsDatabase } from '../database/products';
 
 const checkoutPageStyles = css`
   display: flex;
@@ -66,12 +65,48 @@ export default function Checkout() {
         <h1>Checkout</h1>
         <form>
           <h2>Shipping</h2>
+          <label htmlFor="first-name">First name</label>
+          <input id="first-name" data-test-id="checkout-first-name" required />
+          <label htmlFor="last-name">Last name</label>
+          <input id="last-name" data-test-id="checkout-last-name" required />
+          <label htmlFor="email">E-mail</label>
+          <input id="email" data-test-id="checkout-email" required />
+          <label htmlFor="address">Address</label>
+          <input id="address" data-test-id="checkout-address" required />
+          <label htmlFor="city">City</label>
+          <input id="city" data-test-id="checkout-city" required />
+          <label htmlFor="postal-code">Postal code</label>
+          <input
+            id="postal-code"
+            data-test-id="checkout-postal-code"
+            required
+          />
+          <label htmlFor="country">Country</label>
+          <input id="country" data-test-id="checkout-country" required />
+
           <h2>Payment</h2>
+          <label htmlFor="credit-card-number">Credit card number</label>
+          <input
+            id="credit-card-number"
+            data-test-id="checkout-credit-card"
+            required
+          />
+          <label htmlFor="expiration-date">Expiration date</label>
+          <input
+            id="expiration-date"
+            data-test-id="checkout-expiration-date"
+            required
+          />
+          <label htmlFor="security-code">Security Code</label>
+          <input
+            id="security-code"
+            data-test-id="checkout-security-code"
+            required
+          />
         </form>
         <Link href="/thankyou">
           <a
             data-test-id="checkout-confirm-order"
-            href="/checkout"
             css={checkoutProductButtonStyles}
           >
             CONFIRM ORDER
