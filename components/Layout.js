@@ -15,7 +15,7 @@ export default function Layout(props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Header />
+      <Header cart={props.cart} setCart={props.setCart} />
 
       <main css={mainStyles}>{props.children}</main>
 

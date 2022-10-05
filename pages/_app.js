@@ -44,7 +44,7 @@ function MyApp({ Component, pageProps }) {
           }
         `}
       />
-      <Layout>
+      <Layout cart={cart} setCart={setCart}>
         {/*
           The "Component" component refers to
           the current page that is being rendered

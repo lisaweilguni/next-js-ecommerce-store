@@ -3,6 +3,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getProducts } from '../database/products';
+import { setLocalStorage } from '../utils/localStorage';
 
 const cartPageStyles = css`
   display: flex;
@@ -90,6 +91,21 @@ const checkoutProductButtonStyles = css`
 `;
 
 export default function Cart(props) {
+  const cartTotalPrice = props.cart?.reduce(
+    (accumulator, product) => accumulator + product.price * product.quantity,
+    0,
+  );
+
+  function removeProduct(id) {
+    for (let i = 0; i < props.cart.length; i++) {
+      if (props.cart[i].id === id) {
+        const newCart = props.cart.splice(i, 1);
+        props.setCart(newCart);
+        return;
+      }
+    }
+  }
+
   return (
     <div css={cartPageStyles}>
       <div>
@@ -101,7 +117,7 @@ export default function Cart(props) {
 
       <div css={productOverviewStyles}>
         <h1>Shopping Cart</h1>
-        {props.products.map((product) => {
+        {props.cart?.map((product) => {
           return (
             <div
               key={`product-${product.id}`}
@@ -112,7 +128,7 @@ export default function Cart(props) {
                 <Link href={`/products/${product.id}`}>
                   <a data-test-id={`product-${product.id}`}>
                     <Image
-                      src={`/${product.id}-${product.name.toLowerCase()}.jpeg`}
+                      src={`/${product.id}-${product.name}.jpeg`}
                       alt=""
                       width="181.25"
                       height="129.5"
@@ -135,7 +151,10 @@ export default function Cart(props) {
                 </div>
               </div>
               <div css={removeButtonStyles}>
-                <button data-test-id={`cart-product-remove-${product.id}`}>
+                <button
+                  onClick={() => removeProduct(product.id)}
+                  data-test-id={`cart-product-remove-${product.id}`}
+                >
                   Remove
                 </button>
               </div>
@@ -146,7 +165,7 @@ export default function Cart(props) {
 
       <div css={checkoutBoxStyles}>
         <div>Total:</div>
-        <div data-test-id="cart-total">Price</div>
+        <div data-test-id="cart-total">{cartTotalPrice}</div>
         <Link href="/checkout" data-test-id="cart-checkout">
           <a css={checkoutProductButtonStyles}>CHECKOUT</a>
         </Link>
@@ -155,33 +174,11 @@ export default function Cart(props) {
   );
 }
 
-export async function getServerSideProps(context) {
-  // get the cookies from the request object and parse it if is not undefined
-  const parsedCookies = context.req.cookies.quantity
-    ? JSON.parse(context.req.cookies.quantity)
-    : [];
-
+export async function getServerSideProps() {
   const products = await getProducts();
-
-  // get the quantity property for every product
-  const productsWithQuantityProperty = products.map((product) => {
-    return {
-      ...product,
-      quantity:
-        parsedCookies.find(
-          (cookieProductObject) => product.id === cookieProductObject.id,
-        )?.quantity || 0,
-    };
-  });
-
-  // filter the products out that have been added to the cart
-  const cartProducts = productsWithQuantityProperty.filter(
-    (product) => product.quantity > 0,
-  );
-
   return {
     props: {
-      products: cartProducts,
+      products: products,
     },
   };
 }

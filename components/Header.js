@@ -35,6 +35,11 @@ const logoStyles = css`
 `;
 
 export default function Header(props) {
+  const cartValueCount = props.cart?.reduce(
+    (accumulator, product) => accumulator + product.quantity,
+    0,
+  );
+
   return (
     <header>
       <nav css={headerStyles}>
@@ -55,7 +60,9 @@ export default function Header(props) {
                   width="20"
                   height="20"
                 />
-                <span data-test-id="cart-count">{props.quantity}</span>
+                <span id="cart-total-quantity" data-test-id="cart-count">
+                  {props.cart ? cartValueCount : 0}
+                </span>
               </div>
             </a>
           </Link>
