@@ -18,6 +18,8 @@ const productStyles = css`
   padding: 20px;
   h2 {
     margin-top: 0;
+    margin-bottom: 0;
+    font-size: 20px;
   }
 `;
 
@@ -60,12 +62,6 @@ export default function Products(props) {
         {props.products.map((product) => {
           return (
             <div key={`product-${product.id}`} css={productStyles}>
-              <h2 css={h2Styles}>
-                <Link href={`/products/${product.id}`}>
-                  <a>{product.name}</a>
-                </Link>
-              </h2>
-
               <Link href={`/products/${product.id}`}>
                 <a data-test-id={`product-${product.id}`}>
                   <Image
@@ -77,8 +73,12 @@ export default function Products(props) {
                 </a>
               </Link>
               <div css={productInfoSectionStyles}>
-                <div>Price: EUR {product.price}</div>
-                {/* <div>Amount: {product.amount}</div> */}
+                <h2 css={h2Styles}>
+                  <Link href={`/products/${product.id}`}>
+                    <a>{product.name}</a>
+                  </Link>
+                </h2>
+                <div>EUR {product.price}</div>
                 <Link href={`/products/${product.id}`}>
                   <a
                     href={`/products/${product.id}`}

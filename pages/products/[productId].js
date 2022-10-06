@@ -4,7 +4,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { getProductById } from '../../database/products';
-import { getParsedCookie, setStringifiedCookie } from '../../utils/cookies';
 
 const productStyles = css`
   display: flex;

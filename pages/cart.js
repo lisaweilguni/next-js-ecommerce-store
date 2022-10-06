@@ -3,7 +3,6 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getProducts } from '../database/products';
-import { setLocalStorage } from '../utils/localStorage';
 
 const cartPageStyles = css`
   display: flex;
@@ -31,7 +30,10 @@ const singleProductStyles = css`
 const singleProductImageStyles = css`
   width: 20%;
 `;
+
 const singleProductInfoStyles = css`
+  /* display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr; */
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -44,10 +46,10 @@ const singleProductInfoStyles = css`
 const removeButtonStyles = css`
   display: flex;
   align-items: center;
-
-  button {
-    height: 20px;
-  }
+  height: 20px;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
 `;
 
 const checkoutBoxStyles = css`
@@ -60,19 +62,16 @@ const checkoutBoxStyles = css`
   margin-top: 110px;
   gap: 20px;
   padding: 30px;
-
-  button {
-    width: 40%;
-  }
 `;
 
 const productPriceStyles = css`
   display: flex;
   flex-direction: row;
-  gap: 10px;
+  gap: 5px;
+  text-align: center;
 `;
 
-const checkoutProductButtonStyles = css`
+const checkoutButtonStyles = css`
   padding: 15px 10px;
   border: 0.18em solid grey;
   border-radius: 4px;
@@ -81,12 +80,43 @@ const checkoutProductButtonStyles = css`
   transition: 0.3s ease-in-out;
   text-decoration: none;
   color: white;
+  font-size: 16px;
   text-align: center;
+  cursor: pointer;
 
   &:hover {
     background-color: white;
     border: 0.18em solid grey;
     color: grey;
+  }
+`;
+
+const plusMinusSectionStyles = css`
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  height: 30px;
+  border: 1px solid black;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  padding: 20px 15px;
+  width: 25%;
+
+  button {
+    width: 90%;
+    height: 90%;
+    border: none;
+    text-align: center;
+    justify-content: center;
+    margin-bottom: 18px;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 0;
+
+    &:hover {
+    }
   }
 `;
 
@@ -97,13 +127,8 @@ export default function Cart(props) {
   );
 
   function removeProduct(id) {
-    for (let i = 0; i < props.cart.length; i++) {
-      if (props.cart[i].id === id) {
-        const newCart = props.cart.splice(i, 1);
-        props.setCart(newCart);
-        return;
-      }
-    }
+    const newCart = props.cart?.filter((item) => item.id !== id);
+    props.setCart(newCart);
   }
 
   return (
@@ -116,58 +141,117 @@ export default function Cart(props) {
       </div>
 
       <div css={productOverviewStyles}>
-        <h1>Shopping Cart</h1>
-        {props.cart?.map((product) => {
-          return (
-            <div
-              key={`product-${product.id}`}
-              css={singleProductStyles}
-              data-test-id={`cart-product-${product.id}`}
-            >
-              <div css={singleProductImageStyles}>
-                <Link href={`/products/${product.id}`}>
-                  <a data-test-id={`product-${product.id}`}>
-                    <Image
-                      src={`/${product.id}-${product.name}.jpeg`}
-                      alt=""
-                      width="181.25"
-                      height="129.5"
-                    />
-                  </a>
-                </Link>
-              </div>
-              <div css={singleProductInfoStyles}>
-                <div>{product.name}</div>
-                <div css={productPriceStyles}>
-                  <div>EUR</div>
-                  <div>{product.price}</div>
+        <h1>Your Cart</h1>
+        {!props.cart?.length ? (
+          <div>Your cart is empty</div>
+        ) : (
+          props.cart?.map((product) => {
+            return (
+              <div
+                key={`product-${product.id}`}
+                css={singleProductStyles}
+                data-test-id={`cart-product-${product.id}`}
+              >
+                <div css={singleProductImageStyles}>
+                  <Link href={`/products/${product.id}`}>
+                    <a data-test-id={`product-${product.id}`}>
+                      <Image
+                        src={`/${product.id}-${product.name}.jpeg`}
+                        alt=""
+                        width="181.25"
+                        height="129.5"
+                      />
+                    </a>
+                  </Link>
                 </div>
+                <div css={singleProductInfoStyles}>
+                  <div>{product.name}</div>
+                  <div css={productPriceStyles}>
+                    <div>EUR</div>
+                    <div>{product.price}</div>
+                  </div>
 
-                <div css={productPriceStyles}>
-                  <div>Quantity:</div>
-                  <div data-test-id={`cart-product-quantity-${product.id}`}>
-                    {product.quantity}
+                  <div css={plusMinusSectionStyles}>
+                    <button
+                      data-test-id="product-quantity"
+                      onClick={() => {
+                        const foundCookie = props.cart?.find(
+                          (cookieProductObject) =>
+                            cookieProductObject.id === product.id,
+                        );
+
+                        if (!foundCookie) {
+                          props.cart.push({
+                            id: props.product.id,
+                            name: props.product.name,
+                            price: props.product.price,
+                            quantity: -1,
+                          });
+                        } else if (foundCookie.quantity > 1) {
+                          foundCookie.quantity--;
+                        }
+
+                        const newQuantity = [...props.cart];
+                        props.setCart(newQuantity);
+                      }}
+                    >
+                      {' '}
+                      -{' '}
+                    </button>
+
+                    <div data-test-id={`cart-product-quantity-${product.id}`}>
+                      {product.quantity}
+                    </div>
+
+                    <button
+                      data-test-id="product-quantity"
+                      onClick={() => {
+                        const foundCookie = props.cart?.find(
+                          (cookieProductObject) =>
+                            cookieProductObject.id === product.id,
+                        );
+
+                        if (!foundCookie) {
+                          props.cart.push({
+                            id: props.product.id,
+                            name: props.product.name,
+                            price: props.product.price,
+                            quantity: 1,
+                          });
+                        } else {
+                          foundCookie.quantity++;
+                        }
+
+                        const newQuantity = [...props.cart];
+                        props.setCart(newQuantity);
+                      }}
+                    >
+                      +
+                    </button>
+                  </div>
+                  <div>
+                    <button
+                      css={removeButtonStyles}
+                      onClick={() => removeProduct(product.id)}
+                      data-test-id={`cart-product-remove-${product.id}`}
+                    >
+                      <Image src="/remove.png" alt="" width="25" height="25" />
+                    </button>
                   </div>
                 </div>
               </div>
-              <div css={removeButtonStyles}>
-                <button
-                  onClick={() => removeProduct(product.id)}
-                  data-test-id={`cart-product-remove-${product.id}`}
-                >
-                  Remove
-                </button>
-              </div>
-            </div>
-          );
-        })}
+            );
+          })
+        )}
       </div>
 
       <div css={checkoutBoxStyles}>
         <div>Total:</div>
         <div data-test-id="cart-total">{cartTotalPrice}</div>
-        <Link href="/checkout" data-test-id="cart-checkout">
-          <a css={checkoutProductButtonStyles}>CHECKOUT</a>
+        <Link href="/checkout">
+          <button css={checkoutButtonStyles} data-test-id="cart-checkout">
+            CHECKOUT
+          </button>
         </Link>
       </div>
     </div>

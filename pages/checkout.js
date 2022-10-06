@@ -43,6 +43,7 @@ const checkoutProductButtonStyles = css`
   text-decoration: none;
   color: white;
   text-align: center;
+  cursor: pointer;
 
   &:hover {
     background-color: white;
