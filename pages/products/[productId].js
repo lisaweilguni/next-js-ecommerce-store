@@ -113,7 +113,7 @@ export default function Product(props) {
                 }-${props.product.name.toLowerCase()}.jpeg`}
                 alt=""
                 width="725"
-                height="518"
+                height="490"
                 data-test-id="product-image"
               />
             </a>
