@@ -38,13 +38,34 @@ const imageSectionStyles = css`
 const plusMinusSectionStyles = (showCounter) => css`
   display: flex;
   flex-direction: row;
-  gap: 10px;
+  gap: 15px;
+  height: 30px;
+  border: 1px solid black;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  padding: 20px 15px;
+  width: 106px;
+
+  button {
+    width: 90%;
+    height: 90%;
+    border: none;
+    text-align: center;
+    justify-content: center;
+    margin-bottom: 18px;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 0;
+  }
 
   ${!showCounter &&
   css`
     height: 0;
     padding: 0;
     overflow: hidden;
+    border: none;
   `};
 `;
 
@@ -59,8 +80,8 @@ const addToCartButtonStyles = css`
   border: 0.18em solid grey;
   border-radius: 4px;
   background-color: grey;
-  -webkit-transition: 0.3s ease-in-out;
-  transition: 0.3s ease-in-out;
+  -webkit-transition: 0.2s ease-in-out;
+  transition: 0.2s ease-in-out;
   text-decoration: none;
   color: white;
   font-size: 16px;
@@ -136,8 +157,6 @@ export default function Product(props) {
                 props.setCart([
                   {
                     id: props.product.id,
-                    name: props.product.name,
-                    price: props.product.price,
                     quantity: 1,
                   },
                 ]);
@@ -147,8 +166,6 @@ export default function Product(props) {
               if (!foundCookie) {
                 props.cart.push({
                   id: props.product.id,
-                  name: props.product.name,
-                  price: props.product.price,
                   quantity: 1,
                 });
               } else {
@@ -170,8 +187,6 @@ export default function Product(props) {
                   props.setCart([
                     {
                       id: props.product.id,
-                      name: props.product.name,
-                      price: props.product.price,
                       quantity: -1,
                     },
                   ]);
@@ -181,8 +196,6 @@ export default function Product(props) {
                 if (!foundCookie) {
                   props.cart.push({
                     id: props.product.id,
-                    name: props.product.name,
-                    price: props.product.price,
                     quantity: -1,
                   });
                 } else if (foundCookie.quantity > 1) {
@@ -206,8 +219,6 @@ export default function Product(props) {
                   props.setCart([
                     {
                       id: props.product.id,
-                      name: props.product.name,
-                      price: props.product.price,
                       quantity: 1,
                     },
                   ]);
@@ -217,8 +228,6 @@ export default function Product(props) {
                 if (!foundCookie) {
                   props.cart.push({
                     id: props.product.id,
-                    name: props.product.name,
-                    price: props.product.price,
                     quantity: 1,
                   });
                 } else {

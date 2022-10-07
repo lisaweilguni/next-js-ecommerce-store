@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
+import { getProducts } from '../database/products';
 
 const checkoutPageStyles = css`
   display: flex;
@@ -19,7 +20,7 @@ const userDataFormStyles = css`
 
 const checkoutBoxStyles = css`
   width: 30%;
-  height: 200px;
+  height: 300px;
   border-radius: 15px;
   border: 1px solid #ccc;
   display: flex;
@@ -27,10 +28,6 @@ const checkoutBoxStyles = css`
   margin-top: 110px;
   gap: 20px;
   padding: 30px;
-
-  button {
-    width: 40%;
-  }
 `;
 
 const checkoutProductButtonStyles = css`
@@ -38,8 +35,8 @@ const checkoutProductButtonStyles = css`
   border: 0.18em solid grey;
   border-radius: 4px;
   background-color: grey;
-  -webkit-transition: 0.3s ease-in-out;
-  transition: 0.3s ease-in-out;
+  -webkit-transition: 0.2s ease-in-out;
+  transition: 0.2s ease-in-out;
   text-decoration: none;
   color: white;
   text-align: center;
@@ -52,7 +49,39 @@ const checkoutProductButtonStyles = css`
   }
 `;
 
-export default function Checkout() {
+const productSumStyles = css`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  text-align: center;
+`;
+
+const productSumTotalStyles = css`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  text-align: center;
+  border-top: 1px solid grey;
+  padding-top: 15px;
+`;
+
+export default function Checkout(props) {
+  const cartWithNameAndPrice = props.cart?.map((cart) => {
+    return {
+      ...cart,
+      name: props.products.find((productObject) => cart.id === productObject.id)
+        ?.name,
+      price: props.products.find(
+        (productObject) => cart.id === productObject.id,
+      )?.price,
+    };
+  });
+
+  const cartTotalPrice = cartWithNameAndPrice?.reduce(
+    (accumulator, product) => accumulator + product.price * product.quantity,
+    0,
+  );
+
   return (
     <div css={checkoutPageStyles}>
       <div>
@@ -116,9 +145,30 @@ export default function Checkout() {
       </div>
 
       <div css={checkoutBoxStyles}>
-        <div>Total:</div>
-        <div>Price</div>
+        <h2>Summary</h2>
+        <div css={productSumStyles}>
+          <div>Subtotal</div>
+          <div>{cartTotalPrice}</div>
+        </div>
+        <div css={productSumStyles}>
+          <div>Shipping</div>
+          <div>29.99</div>
+        </div>
+        <div css={productSumTotalStyles}>
+          <div>Total</div>
+          <div>{cartTotalPrice + 29.99}</div>
+        </div>
       </div>
     </div>
   );
+}
+
+export async function getServerSideProps() {
+  const products = await getProducts();
+
+  return {
+    props: {
+      products: products,
+    },
+  };
 }

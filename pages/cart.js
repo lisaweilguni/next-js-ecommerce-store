@@ -76,8 +76,8 @@ const checkoutButtonStyles = css`
   border: 0.18em solid grey;
   border-radius: 4px;
   background-color: grey;
-  -webkit-transition: 0.3s ease-in-out;
-  transition: 0.3s ease-in-out;
+  -webkit-transition: 0.2s ease-in-out;
+  transition: 0.2s ease-in-out;
   text-decoration: none;
   color: white;
   font-size: 16px;
@@ -103,7 +103,7 @@ const plusMinusSectionStyles = css`
   border-radius: 5px;
   border: 1px solid #ccc;
   padding: 20px 15px;
-  width: 25%;
+  width: 106px;
 
   button {
     width: 90%;
@@ -138,7 +138,18 @@ const productSumTotalStyles = css`
 `;
 
 export default function Cart(props) {
-  const cartTotalPrice = props.cart?.reduce(
+  const cartWithNameAndPrice = props.cart?.map((cart) => {
+    return {
+      ...cart,
+      name: props.products.find((productObject) => cart.id === productObject.id)
+        ?.name,
+      price: props.products.find(
+        (productObject) => cart.id === productObject.id,
+      )?.price,
+    };
+  });
+
+  const cartTotalPrice = cartWithNameAndPrice?.reduce(
     (accumulator, product) => accumulator + product.price * product.quantity,
     0,
   );
@@ -156,13 +167,12 @@ export default function Cart(props) {
           <meta name="cart" content="Overview of your shopping cart" />
         </Head>
       </div>
-
       <div css={productOverviewStyles}>
         <h1>Your Cart</h1>
         {!props.cart?.length ? (
           <div>Your cart is empty</div>
         ) : (
-          props.cart?.map((product) => {
+          cartWithNameAndPrice.map((product) => {
             return (
               <div
                 key={`product-${product.id}`}
@@ -183,11 +193,11 @@ export default function Cart(props) {
                 </div>
                 <div css={singleProductInfoStyles}>
                   <div>{product.name}</div>
+
                   <div css={productPriceStyles}>
                     <div>EUR</div>
                     <div>{product.price}</div>
                   </div>
-
                   <div css={plusMinusSectionStyles}>
                     <button
                       data-test-id="product-quantity"
@@ -200,8 +210,7 @@ export default function Cart(props) {
                         if (!foundCookie) {
                           props.cart.push({
                             id: props.product.id,
-                            name: props.product.name,
-                            price: props.product.price,
+
                             quantity: -1,
                           });
                         } else if (foundCookie.quantity > 1) {
@@ -231,8 +240,6 @@ export default function Cart(props) {
                         if (!foundCookie) {
                           props.cart.push({
                             id: props.product.id,
-                            name: props.product.name,
-                            price: props.product.price,
                             quantity: 1,
                           });
                         } else {
@@ -261,7 +268,6 @@ export default function Cart(props) {
           })
         )}
       </div>
-
       <div css={checkoutBoxStyles}>
         <h2>Summary</h2>
         <div css={productSumStyles}>
@@ -270,11 +276,11 @@ export default function Cart(props) {
         </div>
         <div css={productSumStyles}>
           <div>Shipping</div>
-          <div>29.99</div>
+          <div>{!props.cart?.length ? 0 : 29.99}</div>
         </div>
         <div css={productSumTotalStyles}>
           <div>Total</div>
-          <div>{cartTotalPrice + 29.99}</div>
+          <div>{!props.cart?.length ? 0 : cartTotalPrice + 29.99}</div>
         </div>
         <Link href="/checkout">
           <button css={checkoutButtonStyles} data-test-id="cart-checkout">
@@ -288,6 +294,7 @@ export default function Cart(props) {
 
 export async function getServerSideProps() {
   const products = await getProducts();
+
   return {
     props: {
       products: products,
