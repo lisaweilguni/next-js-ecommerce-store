@@ -272,7 +272,9 @@ export default function Cart(props) {
         <h2>Summary</h2>
         <div css={productSumStyles}>
           <div>Subtotal</div>
-          <div data-test-id="cart-total">{cartTotalPrice}</div>
+          <div data-test-id="cart-total">
+            {!props.cart?.length ? 0 : cartTotalPrice}
+          </div>
         </div>
         <div css={productSumStyles}>
           <div>Shipping</div>
@@ -283,7 +285,11 @@ export default function Cart(props) {
           <div>{!props.cart?.length ? 0 : cartTotalPrice + 29.99}</div>
         </div>
         <Link href="/checkout">
-          <button css={checkoutButtonStyles} data-test-id="cart-checkout">
+          <button
+            css={checkoutButtonStyles}
+            data-test-id="cart-checkout"
+            disabled={!props.cart?.length ? true : false}
+          >
             CHECKOUT
           </button>
         </Link>
