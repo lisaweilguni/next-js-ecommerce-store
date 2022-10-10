@@ -6,7 +6,7 @@ const headerStyles = css`
   display: flex;
   justify-content: space-between;
   background-color: #ddd;
-  padding: 30px;
+  padding: 35px;
   font-size: 14px;
 
   a {
@@ -56,7 +56,7 @@ export default function Header(props) {
               <div css={cartSymbolStyles}>
                 <Image
                   src="/shopping-cart.jpeg"
-                  alt=""
+                  alt="cart symbol"
                   width="20"
                   height="20"
                 />

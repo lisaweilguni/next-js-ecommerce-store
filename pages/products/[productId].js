@@ -8,8 +8,8 @@ import { getProductById } from '../../database/products';
 const productStyles = css`
   display: flex;
   flex-direction: row;
-  border-radius: 15px;
-  border: 1px solid #ccc;
+  /* border-radius: 4px;
+  border: 1px solid #ccc; */
   padding: 20px;
   gap: 40px;
   h2 {
@@ -25,7 +25,7 @@ const productInfoStyles = css`
   padding: 40px;
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 30px;
 `;
 
 const imageSectionStyles = css`
@@ -33,6 +33,12 @@ const imageSectionStyles = css`
     color: black;
     text-decoration: none;
   }
+`;
+
+const flexRowStyles = css`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
 `;
 
 const plusMinusSectionStyles = (showCounter) => css`
@@ -73,6 +79,8 @@ const productPriceStyles = css`
   display: flex;
   flex-direction: row;
   gap: 10px;
+  font-size: 18px;
+  font-weight: bold;
 `;
 
 const addToCartButtonStyles = css`
@@ -95,8 +103,57 @@ const addToCartButtonStyles = css`
   }
 `;
 
+const circleStyles = css`
+  border-radius: 9999px;
+  background-color: rgba(16, 185, 129);
+  width: 16px;
+  height: 16px;
+`;
+
+const hiddenSectionStyles = (showButton) => css`
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  justify-content: space-between;
+
+  ${!showButton &&
+  css`
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: none;
+  `};
+`;
+
+const goToCartButtonStyles = css`
+  border-radius: 4px;
+  text-align: center;
+  font-size: 15px;
+  text-decoration: none;
+  color: #4b4d4b;
+  width: 150px;
+  height: 43px;
+  cursor: pointer;
+  background-color: white;
+  border: 1px solid grey;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  &:hover {
+    background-color: grey;
+    color: white;
+  }
+
+  > span {
+    margin-right: 10px;
+    margin-left: 5px;
+  }
+`;
+
 export default function Product(props) {
   const [showCounter, setShowCounter] = useState(false);
+  const [showButton, setShowButton] = useState(false);
 
   if (props.error) {
     return (
@@ -143,16 +200,21 @@ export default function Product(props) {
 
         <div css={productInfoStyles}>
           <h1>{props.product.name}</h1>
+          <div>{props.product.info}</div>
+
+          <div css={flexRowStyles}>
+            <div css={circleStyles}> </div> <div>In stock, ready to roll</div>
+          </div>
           <div css={productPriceStyles}>
             <div>EUR</div>
             <div data-test-id="product-price">{props.product.price}</div>
           </div>
-          <div>🟢 In stock, ready to ship</div>
           <button
             css={addToCartButtonStyles}
             data-test-id="product-add-to-cart"
             onClick={() => {
               setShowCounter(true);
+              setShowButton(true);
               if (!props.cart) {
                 props.setCart([
                   {
@@ -179,67 +241,84 @@ export default function Product(props) {
             ADD TO CART
           </button>
 
-          <div css={plusMinusSectionStyles(showCounter)}>
-            <button
-              data-test-id="product-quantity"
-              onClick={() => {
-                if (!props.cart) {
-                  props.setCart([
-                    {
+          <div css={hiddenSectionStyles(showButton)}>
+            <div css={plusMinusSectionStyles(showCounter)}>
+              <button
+                data-test-id="product-quantity"
+                onClick={() => {
+                  if (!props.cart) {
+                    props.setCart([
+                      {
+                        id: props.product.id,
+                        quantity: -1,
+                      },
+                    ]);
+                    return;
+                  }
+
+                  if (!foundCookie) {
+                    props.cart.push({
                       id: props.product.id,
                       quantity: -1,
-                    },
-                  ]);
-                  return;
-                }
+                    });
+                  } else if (foundCookie.quantity > 1) {
+                    foundCookie.quantity--;
+                  }
 
-                if (!foundCookie) {
-                  props.cart.push({
-                    id: props.product.id,
-                    quantity: -1,
-                  });
-                } else if (foundCookie.quantity > 1) {
-                  foundCookie.quantity--;
-                }
+                  const newQuantity = [...props.cart];
+                  props.setCart(newQuantity);
+                }}
+              >
+                {' '}
+                -{' '}
+              </button>
 
-                const newQuantity = [...props.cart];
-                props.setCart(newQuantity);
-              }}
-            >
-              {' '}
-              -{' '}
-            </button>
+              <div>{foundCookie ? foundCookie.quantity : 1}</div>
 
-            <div>{foundCookie ? foundCookie.quantity : 1}</div>
+              <button
+                data-test-id="product-quantity"
+                onClick={() => {
+                  if (!props.cart) {
+                    props.setCart([
+                      {
+                        id: props.product.id,
+                        quantity: 1,
+                      },
+                    ]);
+                    return;
+                  }
 
-            <button
-              data-test-id="product-quantity"
-              onClick={() => {
-                if (!props.cart) {
-                  props.setCart([
-                    {
+                  if (!foundCookie) {
+                    props.cart.push({
                       id: props.product.id,
                       quantity: 1,
-                    },
-                  ]);
-                  return;
-                }
+                    });
+                  } else {
+                    foundCookie.quantity++;
+                  }
 
-                if (!foundCookie) {
-                  props.cart.push({
-                    id: props.product.id,
-                    quantity: 1,
-                  });
-                } else {
-                  foundCookie.quantity++;
-                }
-
-                const newQuantity = [...props.cart];
-                props.setCart(newQuantity);
-              }}
-            >
-              +
-            </button>
+                  const newQuantity = [...props.cart];
+                  props.setCart(newQuantity);
+                }}
+              >
+                +
+              </button>
+            </div>
+            <div>
+              <Link href="/cart">
+                <button css={goToCartButtonStyles}>
+                  <span>
+                    <Image
+                      src="/shopping-cart.jpeg"
+                      alt="cart symbol"
+                      width="20"
+                      height="20"
+                    />
+                  </span>
+                  <div>GO TO CART</div>
+                </button>
+              </Link>
+            </div>
           </div>
         </div>
       </div>

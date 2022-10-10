@@ -145,12 +145,14 @@ const productSumTotalStyles = css`
   padding-top: 15px;
 `;
 
-// Prevent page refresh
-const handleSubmit = (event) => {
-  event.preventDefault();
-};
-
 export default function Checkout(props) {
+  // Prevent page refresh
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    window.location.href = '/thankyou';
+    props.setCart([]);
+  };
+
   const cartWithNameAndPrice = props.cart?.map((cart) => {
     return {
       ...cart,
@@ -257,14 +259,12 @@ export default function Checkout(props) {
             </div>
           </div>
 
-          <Link href="/thankyou">
-            <button
-              data-test-id="checkout-confirm-order"
-              css={checkoutProductButtonStyles}
-            >
-              CONFIRM ORDER
-            </button>
-          </Link>
+          <button
+            data-test-id="checkout-confirm-order"
+            css={checkoutProductButtonStyles}
+          >
+            CONFIRM ORDER
+          </button>
         </form>
       </div>
 
