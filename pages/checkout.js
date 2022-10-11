@@ -1,12 +1,13 @@
 import { css } from '@emotion/react';
 import Head from 'next/head';
-import Link from 'next/link';
 import { getProducts } from '../database/products';
 
 const checkoutPageStyles = css`
   display: flex;
   flex-direction: row;
   gap: 40px;
+  padding: 20px 100px;
+  margin-left: 10px;
 `;
 
 const h1Styles = css`
@@ -109,23 +110,23 @@ const checkoutBoxStyles = css`
 
 const checkoutProductButtonStyles = css`
   padding: 15px 10px;
-  border: 0.18em solid grey;
+  border: 0.18em solid #000000;
   border-radius: 4px;
-  background-color: grey;
   -webkit-transition: 0.2s ease-in-out;
   transition: 0.2s ease-in-out;
   text-decoration: none;
-  color: white;
   font-size: 16px;
   text-align: center;
   cursor: pointer;
   margin-top: 20px;
   width: 494px;
+  background-color: #000000;
+  color: white;
 
   &:hover {
-    background-color: white;
-    border: 0.18em solid grey;
-    color: grey;
+    background-color: #e7612e;
+    border: 0.18em solid #e7612e;
+    color: white;
   }
 `;
 
@@ -243,7 +244,7 @@ export default function Checkout(props) {
                 <input
                   id="expiration-date"
                   data-test-id="checkout-expiration-date"
-                  placeholder="03 / 2023"
+                  placeholder="MM / YY"
                   required
                 />
               </div>
@@ -252,7 +253,7 @@ export default function Checkout(props) {
                 <input
                   id="security-code"
                   data-test-id="checkout-security-code"
-                  placeholder="345"
+                  placeholder="CVC"
                   required
                 />
               </div>

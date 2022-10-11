@@ -4,8 +4,8 @@ import Footer from './Footer';
 import Header from './Header';
 
 const mainStyles = css`
-  padding: 20px 100px;
-  margin-left: 10px;
+  /* padding: 20px 100px;
+  margin-left: 10px; */
 `;
 
 export default function Layout(props) {

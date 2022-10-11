@@ -1,28 +1,36 @@
 import { css } from '@emotion/react';
+import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
-import { getProductById } from '../../database/products';
+import { Dispatch, SetStateAction, useState } from 'react';
+import { getProductById, Product } from '../../database/products';
+import { parseIntFromContextQuery } from '../../utils/contextQuery';
+import { CartItem } from '../../utils/cookies';
+
+const mainStyles = css`
+  padding: 20px 100px;
+  margin-left: 10px;
+`;
 
 const productStyles = css`
   display: flex;
   flex-direction: row;
-  /* border-radius: 4px;
-  border: 1px solid #ccc; */
   padding: 20px;
   gap: 40px;
+
   h2 {
     margin-top: 0;
   }
-  & + & {
+  /* & + & {
     margin-top: 25px;
-  }
+  } */
 `;
 
 const productInfoStyles = css`
   width: 40%;
   padding: 40px;
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
   gap: 30px;
@@ -30,8 +38,12 @@ const productInfoStyles = css`
 
 const imageSectionStyles = css`
   a {
-    color: black;
     text-decoration: none;
+    color: #333333;
+  }
+
+  a:hover {
+    color: black;
   }
 `;
 
@@ -41,7 +53,24 @@ const flexRowStyles = css`
   gap: 10px;
 `;
 
-const plusMinusSectionStyles = (showCounter) => css`
+const productDescriptionStyles = css`
+  background-color: #f4f4f4;
+  padding: 20px 20px;
+  line-height: 25px;
+  border-radius: 5px;
+`;
+
+const h1Styles = css`
+  margin-top: 0;
+  margin-bottom: 0;
+`;
+
+const smallHeadingAddOnStyles = css`
+  font-size: 12px;
+  margin-bottom: 0;
+`;
+
+const plusMinusSectionStyles = (showCounter: boolean) => css`
   display: flex;
   flex-direction: row;
   gap: 15px;
@@ -78,16 +107,16 @@ const plusMinusSectionStyles = (showCounter) => css`
 const productPriceStyles = css`
   display: flex;
   flex-direction: row;
-  gap: 10px;
+  gap: 5px;
   font-size: 18px;
   font-weight: bold;
 `;
 
 const addToCartButtonStyles = css`
   padding: 15px 10px;
-  border: 0.18em solid grey;
+  border: 0.18em solid #000000;
   border-radius: 4px;
-  background-color: grey;
+  background-color: #000000;
   -webkit-transition: 0.2s ease-in-out;
   transition: 0.2s ease-in-out;
   text-decoration: none;
@@ -97,9 +126,9 @@ const addToCartButtonStyles = css`
   cursor: pointer;
 
   &:hover {
-    background-color: white;
-    border: 0.18em solid grey;
-    color: grey;
+    background-color: #e7612e;
+    border: 0.18em solid #e7612e;
+    color: white;
   }
 `;
 
@@ -110,7 +139,7 @@ const circleStyles = css`
   height: 16px;
 `;
 
-const hiddenSectionStyles = (showButton) => css`
+const hiddenSectionStyles = (showButton: boolean) => css`
   display: flex;
   flex-direction: row;
   gap: 20px;
@@ -128,34 +157,44 @@ const hiddenSectionStyles = (showButton) => css`
 const goToCartButtonStyles = css`
   border-radius: 4px;
   text-align: center;
-  font-size: 15px;
+  font-size: 14px;
   text-decoration: none;
-  color: #4b4d4b;
-  width: 150px;
-  height: 43px;
+  color: #333333;
+  width: 160px;
+  height: 45px;
   cursor: pointer;
-  background-color: white;
-  border: 1px solid grey;
+  background-color: #f4f4f4;
+  border: 1px solid #f4f4f4;
   display: flex;
   flex-direction: row;
   align-items: center;
+  -webkit-transition: 0.2s ease-in-out;
+  transition: 0.2s ease-in-out;
 
   &:hover {
-    background-color: grey;
+    background-color: #e7612e;
     color: white;
+    border: 1px solid #e7612e;
   }
 
   > span {
     margin-right: 10px;
-    margin-left: 5px;
+    margin-left: 10px;
   }
 `;
 
-export default function Product(props) {
+type CartState = {
+  cart: CartItem[] | undefined;
+  setCart: Dispatch<SetStateAction<CartItem[] | undefined>>;
+};
+
+type Props = { product: Product } | { error: string };
+
+export default function SingleProduct(props: Props & CartState) {
   const [showCounter, setShowCounter] = useState(false);
   const [showButton, setShowButton] = useState(false);
 
-  if (props.error) {
+  if ('error' in props) {
     return (
       <div>
         <Head>
@@ -170,11 +209,12 @@ export default function Product(props) {
 
   // Define cookie for product in variable here in order to use it globally in this page
   const foundCookie = props.cart?.find(
-    (cookieProductObject) => cookieProductObject.id === props.product.id,
+    (cookieProductObject: CartItem) =>
+      cookieProductObject.id === props.product.id,
   );
 
   return (
-    <div>
+    <div css={mainStyles}>
       <div key={`product-${props.product.id}`} css={productStyles}>
         <Head>
           <title>{props.product.name}</title>
@@ -182,7 +222,7 @@ export default function Product(props) {
         </Head>
 
         <div css={imageSectionStyles}>
-          <Link href="/products">⬅ All bicycles</Link>
+          <Link href="/products">⬅ All Bicycles</Link>
           <Link href={`/products/${props.product.id}`}>
             <a>
               <Image
@@ -199,8 +239,9 @@ export default function Product(props) {
         </div>
 
         <div css={productInfoStyles}>
-          <h1>{props.product.name}</h1>
-          <div>{props.product.info}</div>
+          <div css={smallHeadingAddOnStyles}>Vintage Road Bicycle</div>
+          <h1 css={h1Styles}>{props.product.name}</h1>
+          <div css={productDescriptionStyles}>{props.product.info}</div>
 
           <div css={flexRowStyles}>
             <div css={circleStyles}> </div> <div>In stock, ready to roll</div>
@@ -326,9 +367,21 @@ export default function Product(props) {
   );
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(
+  context: GetServerSidePropsContext,
+): Promise<GetServerSidePropsResult<Props>> {
   // Retrieving product id from url
-  const productId = parseInt(context.query.productId);
+  const productId = parseIntFromContextQuery(context.query.productId);
+
+  // Handling error if product id is not a number
+  if (typeof productId === 'undefined') {
+    context.res.statusCode = 404;
+    return {
+      props: {
+        error: 'Product not found',
+      },
+    };
+  }
 
   // Get product from database
   const foundProduct = await getProductById(productId);

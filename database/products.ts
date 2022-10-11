@@ -14,6 +14,7 @@ export type Product = {
   id: number;
   name: string;
   price: number;
+  info: string;
 };
 
 // Get all products

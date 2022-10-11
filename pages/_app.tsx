@@ -1,12 +1,17 @@
 import { css, Global } from '@emotion/react';
+import { AppProps } from 'next/app';
 import { useEffect, useState } from 'react';
 import CookieBanner from '../components/CookieBanner';
 import Layout from '../components/Layout';
-import { getParsedCookie, setStringifiedCookie } from '../utils/cookies';
+import {
+  CartItem,
+  getParsedCookie,
+  setStringifiedCookie,
+} from '../utils/cookies';
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps }: AppProps) {
   // Define state for quantity count in cart
-  const [cart, setCart] = useState();
+  const [cart, setCart] = useState<CartItem[]>();
 
   // Get cookies and set state on first render
   useEffect(() => {
@@ -33,11 +38,9 @@ function MyApp({ Component, pageProps }) {
             box-sizing: border-box;
           }
           body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-              Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
-              sans-serif;
+            font-family: 'Montserrat', sans-serif;
             background-color: white;
-            color: #202020;
+            color: #333333;
             margin: 0;
             line-height: 20px;
             font-size: 16px;

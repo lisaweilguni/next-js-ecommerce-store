@@ -5,8 +5,8 @@ import Link from 'next/link';
 const headerStyles = css`
   display: flex;
   justify-content: space-between;
-  background-color: #ddd;
-  padding: 35px;
+  background-color: #f4f4f4;
+  padding: 20px;
   font-size: 14px;
 
   a {
@@ -21,17 +21,34 @@ const headerStyles = css`
 const navStyles = css`
   display: flex;
   flex-direction: row;
-  gap: 70px;
+  gap: 100px;
+  align-items: center;
+  margin-right: 40px;
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: #333333;
+`;
+
+const linkHeaderStyles = css`
+  -webkit-transition: 0.2s ease-in-out;
+  transition: 0.2s ease-in-out;
+
+  &:hover {
+    font-weight: bold;
+  }
 `;
 
 const cartSymbolStyles = css`
   display: flex;
   flex-direction: row;
   gap: 10px;
+  font-size: 14px;
+  font-weight: normal;
 `;
 
 const logoStyles = css`
   margin-left: 75px;
+  cursor: pointer;
 `;
 
 export default function Header(props) {
@@ -44,13 +61,24 @@ export default function Header(props) {
     <header>
       <nav css={headerStyles}>
         <div css={logoStyles}>
-          <Link href="/">cycleria logo</Link>
+          <Link href="/">
+            <Image
+              src="/logo.jpeg"
+              alt="cart symbol"
+              width="135.3"
+              height="44.66"
+            />
+          </Link>
         </div>
         <div css={navStyles}>
-          <Link href="/products" data-test-id="products-link">
-            Products
-          </Link>
-          <Link href="/about">About</Link>
+          <div css={linkHeaderStyles}>
+            <Link href="/products" data-test-id="products-link">
+              Bicycles
+            </Link>
+          </div>
+          <div css={linkHeaderStyles}>
+            <Link href="/about">About</Link>
+          </div>
           <Link href="/cart">
             <a data-test-id="cart-link">
               <div css={cartSymbolStyles}>

@@ -1,4 +1,10 @@
+import { css } from '@emotion/react';
 import Head from 'next/head';
+
+const mainStyles = css`
+  padding: 20px 100px;
+  margin-left: 10px;
+`;
 
 export default function About() {
   return (
@@ -7,7 +13,9 @@ export default function About() {
         <title>About</title>
         <meta name="description" content="Information about the creator" />
       </Head>
-      <h1>About</h1>
+      <div css={mainStyles}>
+        <h1>About</h1>
+      </div>
     </div>
   );
 }
