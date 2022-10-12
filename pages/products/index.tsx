@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { getProducts, Product } from '../../database/products';
 
 const mainStyles = css`
-  padding: 20px 100px;
+  padding: 120px 100px;
   margin-left: 10px;
 `;
 
@@ -62,8 +62,6 @@ const viewProductButtonStyles = css`
   }
 `;
 
-const h1Styles = css``;
-
 const h2Styles = css`
   a {
     text-decoration: none;
@@ -83,7 +81,7 @@ export default function Products(props: Props) {
         <meta name="description" content="Overview of products" />
       </Head>
       <div css={mainStyles}>
-        <h1 css={h1Styles}>Bicycles</h1>
+        <h1>Bicycles</h1>
 
         <div css={productLayoutStyles}>
           {props.products.map((product) => {
@@ -93,7 +91,7 @@ export default function Products(props: Props) {
                   <a data-test-id={`product-${product.id}`}>
                     <Image
                       src={`/${product.id}-${product.name.toLowerCase()}.jpeg`}
-                      alt=""
+                      alt={`Vintage Road Bicycle ${product.name}`}
                       width="362.5"
                       height="245"
                     />

@@ -16,15 +16,12 @@ const mainStyles = css`
 const productStyles = css`
   display: flex;
   flex-direction: row;
-  padding: 20px;
+  padding: 120px 20px;
   gap: 40px;
 
   h2 {
     margin-top: 0;
   }
-  /* & + & {
-    margin-top: 25px;
-  } */
 `;
 
 const productInfoStyles = css`
@@ -229,7 +226,7 @@ export default function SingleProduct(props: Props & CartState) {
                 src={`/${
                   props.product.id
                 }-${props.product.name.toLowerCase()}.jpeg`}
-                alt=""
+                alt={`Vintage Road Bicycle ${props.product.name} on white background`}
                 width="725"
                 height="490"
                 data-test-id="product-image"
@@ -285,7 +282,7 @@ export default function SingleProduct(props: Props & CartState) {
           <div css={hiddenSectionStyles(showButton)}>
             <div css={plusMinusSectionStyles(showCounter)}>
               <button
-                data-test-id="product-quantity"
+                // data-test-id="product-quantity"
                 onClick={() => {
                   if (!props.cart) {
                     props.setCart([

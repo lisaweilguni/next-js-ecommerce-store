@@ -8,7 +8,7 @@ const cartPageStyles = css`
   display: flex;
   flex-direction: row;
   gap: 40px;
-  padding: 20px 100px;
+  padding: 120px 100px;
   margin-left: 10px;
 `;
 
@@ -34,8 +34,6 @@ const singleProductImageStyles = css`
 `;
 
 const singleProductInfoStyles = css`
-  /* display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr; */
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -166,7 +164,10 @@ export default function Cart(props) {
       <div>
         <Head>
           <title>Cart</title>
-          <meta name="cart" content="Overview of your shopping cart" />
+          <meta
+            name="cart"
+            content="Overview of your shopping cart. Displaying all products in your cart and the total price"
+          />
         </Head>
       </div>
       <div css={productOverviewStyles}>
@@ -186,7 +187,7 @@ export default function Cart(props) {
                     <a data-test-id={`product-${product.id}`}>
                       <Image
                         src={`/${product.id}-${product.name}.jpeg`}
-                        alt=""
+                        alt={`Vintage Road Bicycle ${props.product.name}`}
                         width="181.25"
                         height="122.5"
                       />

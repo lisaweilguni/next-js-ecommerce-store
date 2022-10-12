@@ -6,7 +6,7 @@ const checkoutPageStyles = css`
   display: flex;
   flex-direction: row;
   gap: 40px;
-  padding: 20px 100px;
+  padding: 120px 100px;
   margin-left: 10px;
 `;
 
@@ -147,13 +147,6 @@ const productSumTotalStyles = css`
 `;
 
 export default function Checkout(props) {
-  // Prevent page refresh
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    window.location.href = '/thankyou';
-    props.setCart([]);
-  };
-
   const cartWithNameAndPrice = props.cart?.map((cart) => {
     return {
       ...cart,
@@ -170,12 +163,22 @@ export default function Checkout(props) {
     0,
   );
 
+  // Prevent page refresh, direct to thank you page and empty cart
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    window.location.href = '/thankyou';
+    props.setCart([]);
+  };
+
   return (
     <div css={checkoutPageStyles}>
       <div>
         <Head>
           <title>Checkout</title>
-          <meta name="checkout" content="Checkout" />
+          <meta
+            name="checkout"
+            content="Form to enter your shipping information and payment details"
+          />
         </Head>
       </div>
 

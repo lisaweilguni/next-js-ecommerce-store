@@ -8,6 +8,9 @@ const headerStyles = css`
   background-color: #f4f4f4;
   padding: 20px;
   font-size: 14px;
+  position: fixed;
+  width: 100%;
+  z-index: 1;
 
   a {
     text-decoration: none;
@@ -32,9 +35,11 @@ const navStyles = css`
 const linkHeaderStyles = css`
   -webkit-transition: 0.2s ease-in-out;
   transition: 0.2s ease-in-out;
+  color: #333333;
 
   &:hover {
-    font-weight: bold;
+    color: #e7612e;
+    cursor: pointer;
   }
 `;
 
@@ -73,11 +78,13 @@ export default function Header(props) {
         <div css={navStyles}>
           <div css={linkHeaderStyles}>
             <Link href="/products" data-test-id="products-link">
-              Bicycles
+              <span css={linkHeaderStyles}>Bicycles</span>
             </Link>
           </div>
-          <div css={linkHeaderStyles}>
-            <Link href="/about">About</Link>
+          <div>
+            <Link href="/about">
+              <span css={linkHeaderStyles}>About</span>
+            </Link>
           </div>
           <Link href="/cart">
             <a data-test-id="cart-link">
@@ -88,7 +95,11 @@ export default function Header(props) {
                   width="20"
                   height="20"
                 />
-                <span id="cart-total-quantity" data-test-id="cart-count">
+                <span
+                  id="cart-total-quantity"
+                  data-test-id="cart-count"
+                  css={linkHeaderStyles}
+                >
                   {props.cart ? cartValueCount : 0}
                 </span>
               </div>

@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import Head from 'next/head';
+import Link from 'next/link';
 
 const heroPageLayoutStyles = css`
   display: flex;
@@ -7,14 +8,15 @@ const heroPageLayoutStyles = css`
   z-index: 2;
   background-color: grey;
   background-image: url(wall3.jpeg);
+  background-size: cover;
 `;
 
 const titleSectionStyles = css`
   display: flex;
   flex-direction: column;
-  padding: 20px 50px 200px;
+  padding: 20px 50px 150px;
   gap: 30px;
-  margin-top: 100px;
+  margin-top: 130px;
   margin-left: 70px;
   color: white;
 
@@ -55,7 +57,7 @@ export default function Home() {
     <div>
       <Head>
         <title>Vintage Road Bicycles</title>
-        <meta name="description" content="Overview of the store" />
+        <meta name="welcome" content="Welcome to cycleria" />
       </Head>
 
       <div css={heroPageLayoutStyles}>
@@ -65,7 +67,9 @@ export default function Home() {
             Vintage Road <br /> Bicycles
           </h1>
           <div>Rediscover the art of cycling.</div>
-          <a>View Bicycles</a>
+          <Link href="/products">
+            <a>View Bicycles</a>
+          </Link>
         </div>
       </div>
     </div>

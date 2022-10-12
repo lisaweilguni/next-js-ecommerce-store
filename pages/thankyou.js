@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import Head from 'next/head';
 
 const thankYouPageStyles = css`
-  padding: 20px 100px;
+  padding: 120px 100px;
   margin-left: 10px;
 `;
 
