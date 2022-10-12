@@ -52,7 +52,7 @@ const cartSymbolStyles = css`
 `;
 
 const logoStyles = css`
-  margin-left: 75px;
+  margin-left: 110px;
   cursor: pointer;
 `;
 

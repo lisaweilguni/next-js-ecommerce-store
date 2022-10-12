@@ -22,3 +22,7 @@ export type CartItem = {
 export function setStringifiedCookie(key: string, value: CartItem[]) {
   Cookies.set(key, JSON.stringify(value));
 }
+
+export function deleteCookie(key: string) {
+  Cookies.remove(key);
+}

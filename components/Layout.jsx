@@ -1,12 +1,6 @@
-import { css } from '@emotion/react';
 import Head from 'next/head';
 import Footer from './Footer';
 import Header from './Header';
-
-const mainStyles = css`
-  /* padding: 20px 100px;
-  margin-left: 10px; */
-`;
 
 export default function Layout(props) {
   return (
@@ -17,7 +11,7 @@ export default function Layout(props) {
 
       <Header cart={props.cart} setCart={props.setCart} />
 
-      <main css={mainStyles}>{props.children}</main>
+      <main>{props.children}</main>
 
       <Footer />
     </>

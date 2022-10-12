@@ -187,7 +187,7 @@ export default function Cart(props) {
                     <a data-test-id={`product-${product.id}`}>
                       <Image
                         src={`/${product.id}-${product.name}.jpeg`}
-                        alt={`Vintage Road Bicycle ${props.product.name}`}
+                        alt={`Vintage Road Bicycle ${product.name}`}
                         width="181.25"
                         height="122.5"
                       />

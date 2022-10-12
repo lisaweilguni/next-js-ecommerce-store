@@ -16,8 +16,8 @@ const titleSectionStyles = css`
   flex-direction: column;
   padding: 20px 50px 150px;
   gap: 30px;
-  margin-top: 130px;
-  margin-left: 70px;
+  margin-top: 140px;
+  margin-left: 90px;
   color: white;
 
   a {
@@ -49,15 +49,18 @@ const h1Styles = css`
   font-weight: 700;
   margin: 0;
   text-transform: uppercase;
-  font-size: 50px;
+  font-size: 55px;
 `;
 
 export default function Home() {
   return (
     <div>
       <Head>
-        <title>Vintage Road Bicycles</title>
-        <meta name="welcome" content="Welcome to cycleria" />
+        <title>cycleria - Vintage Bicycles</title>
+        <meta
+          name="welcome"
+          content="Welcome to cycleria - Vintage Road Bicycles."
+        />
       </Head>
 
       <div css={heroPageLayoutStyles}>
