@@ -10,12 +10,19 @@ const footerStyles = css`
   align-items: center;
   letter-spacing: 2px;
   font-size: 14px;
+
+  a {
+    text-decoration: none;
+    color: #333333;
+  }
 `;
 
 export default function Footer() {
   return (
     <footer css={footerStyles}>
-      <span>© Lisa Weilguni | 2022</span>
+      <span>
+        © Lisa Weilguni | 2022 | <a href="/credits">Credits</a>
+      </span>
     </footer>
   );
 }
