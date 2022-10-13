@@ -3,28 +3,44 @@ import { useEffect, useState } from 'react';
 import { getLocalStorage, setLocalStorage } from '../utils/localStorage';
 
 const bannerStyles = (isOpen) => css`
-  padding: 10px 10px 10px 50px;
-  height: 90px;
-  transition: all 0.5s ease-in-out;
-  background-color: grey;
-  color: white;
-  border-radius: 3px;
-  margin: 20px 60px 20px 60px;
-  z-index: 1;
+  padding: 20px;
+  background-color: white;
+  transition: all 0.2s ease-in-out;
+  height: 120px;
+  width: 40%;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -100px;
+  bottom: 0;
+  margin: auto;
+  z-index: 2;
+  border-radius: 4px;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  display: sticky;
+  font-size: 14px;
 
   button {
-    border: 1px solid black;
-    border-radius: 15px;
-    padding: 10px 10px;
+    border-radius: 4px;
+    padding: 7px;
     width: 150px;
     text-align: center;
     font-size: 13px;
     text-decoration: none;
-    color: black;
+
+    -webkit-transition: 0.2s ease-in-out;
+    transition: 0.2s ease-in-out;
+    background-color: black;
+    border: 1px solid black;
+    color: white;
+  }
+
+  button:hover {
+    color: #333333;
+    background-color: white;
+    border: 1px solid #333333;
+    cursor: pointer;
   }
 
   ${!isOpen &&
@@ -47,14 +63,18 @@ export default function CookieBanner() {
 
   return (
     <div css={bannerStyles(isBannerOpen)}>
-      <div>Please accept our cookie policy {isBannerOpen}</div>
+      <div>
+        We use cookies and similar technologies on our website to ensure a
+        smooth shopping experience. Please accept our cookie policy.{' '}
+        {isBannerOpen}
+      </div>
       <button
         onClick={() => {
           setIsBannerOpen(false);
           setLocalStorage('isBannerOpen', false);
         }}
       >
-        Accept All
+        ACCEPT ALL
       </button>
     </div>
   );

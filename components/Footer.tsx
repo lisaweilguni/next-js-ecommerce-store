@@ -1,11 +1,21 @@
 import { css } from '@emotion/react';
 
 const footerStyles = css`
-  /* margin-top: 20px; */
-  padding: 15px 20px;
-  border-top: 2px solid #ddd;
+  padding: 20px 20px 20px 20px;
+  bottom: 0;
+  width: 100%;
+  height: 70px;
+  background-color: #f4f4f4;
+  text-align: center;
+  align-items: center;
+  letter-spacing: 2px;
+  font-size: 14px;
 `;
 
 export default function Footer() {
-  return <footer css={footerStyles}>© Lisa Weilguni | 2022</footer>;
+  return (
+    <footer css={footerStyles}>
+      <span>© Lisa Weilguni | 2022</span>
+    </footer>
+  );
 }

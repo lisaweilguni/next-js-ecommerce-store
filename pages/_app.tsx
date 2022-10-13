@@ -44,6 +44,9 @@ function MyApp({ Component, pageProps }: AppProps) {
             margin: 0;
             line-height: 20px;
             font-size: 16px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
           }
         `}
       />

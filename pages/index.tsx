@@ -11,6 +11,7 @@ const heroPageLayoutStyles = css`
     url(beach2.jpeg);
   background-size: cover;
   background-position: 25% 25%;
+  margin-top: 20px;
 `;
 
 const titleSectionStyles = css`
@@ -18,7 +19,7 @@ const titleSectionStyles = css`
   flex-direction: column;
   padding: 20px 50px 150px;
   gap: 30px;
-  margin-top: 140px;
+  margin-top: 150px;
   margin-left: 90px;
   color: white;
 
