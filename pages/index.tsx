@@ -7,8 +7,10 @@ const heroPageLayoutStyles = css`
   width: 100%;
   z-index: 2;
   background-color: grey;
-  background-image: url(wall3.jpeg);
+  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+    url(beach2.jpeg);
   background-size: cover;
+  background-position: 25% 25%;
 `;
 
 const titleSectionStyles = css`

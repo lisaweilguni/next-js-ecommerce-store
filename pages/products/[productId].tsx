@@ -204,7 +204,7 @@ export default function SingleProduct(props: Props & CartState) {
     );
   }
 
-  // Define cookie for product in variable here in order to use it globally in this page
+  // Declare cookie for product in variable here in order to use it globally in this page
   const foundCookie = props.cart?.find(
     (cookieProductObject: CartItem) =>
       cookieProductObject.id === props.product.id,
@@ -282,7 +282,6 @@ export default function SingleProduct(props: Props & CartState) {
           <div css={hiddenSectionStyles(showButton)}>
             <div css={plusMinusSectionStyles(showCounter)}>
               <button
-                // data-test-id="product-quantity"
                 onClick={() => {
                   if (!props.cart) {
                     props.setCart([
@@ -311,7 +310,9 @@ export default function SingleProduct(props: Props & CartState) {
                 -{' '}
               </button>
 
-              <div>{foundCookie ? foundCookie.quantity : 1}</div>
+              <div data-test-id="product-count">
+                {foundCookie ? foundCookie.quantity : 1}
+              </div>
 
               <button
                 data-test-id="product-quantity"

@@ -203,7 +203,7 @@ export default function Cart(props) {
                   </div>
                   <div css={plusMinusSectionStyles}>
                     <button
-                      data-test-id="product-quantity"
+                      data-test-id="product-quantity-minus"
                       onClick={() => {
                         const foundCookie = props.cart?.find(
                           (cookieProductObject) =>
@@ -233,7 +233,7 @@ export default function Cart(props) {
                     </div>
 
                     <button
-                      data-test-id="product-quantity"
+                      data-test-id="product-quantity-plus"
                       onClick={() => {
                         const foundCookie = props.cart?.find(
                           (cookieProductObject) =>

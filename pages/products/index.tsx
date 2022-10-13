@@ -87,33 +87,36 @@ export default function Products(props: Props) {
           {props.products.map((product) => {
             return (
               <div key={`product-${product.id}`} css={productStyles}>
-                <Link href={`/products/${product.id}`}>
-                  <a data-test-id={`product-${product.id}`}>
-                    <Image
-                      src={`/${product.id}-${product.name.toLowerCase()}.jpeg`}
-                      alt={`Vintage Road Bicycle ${product.name}`}
-                      width="362.5"
-                      height="245"
-                    />
-                  </a>
-                </Link>
-                <div css={productInfoSectionStyles}>
-                  <h2 css={h2Styles}>
-                    <Link href={`/products/${product.id}`}>
-                      <a>{product.name}</a>
-                    </Link>
-                  </h2>
-                  <div>EUR {product.price}</div>
+                <a data-test-id={`product-${product.id}`}>
                   <Link href={`/products/${product.id}`}>
-                    <a
-                      href={`/products/${product.id}`}
-                      data-test-id={`product-${product.id}`}
-                      css={viewProductButtonStyles}
-                    >
-                      LEARN MORE
+                    <a>
+                      <Image
+                        src={`/${
+                          product.id
+                        }-${product.name.toLowerCase()}.jpeg`}
+                        alt={`Vintage Road Bicycle ${product.name}`}
+                        width="362.5"
+                        height="245"
+                      />
                     </a>
                   </Link>
-                </div>
+                  <div css={productInfoSectionStyles}>
+                    <h2 css={h2Styles}>
+                      <Link href={`/products/${product.id}`}>
+                        <a>{product.name}</a>
+                      </Link>
+                    </h2>
+                    <div>EUR {product.price}</div>
+                    <Link href={`/products/${product.id}`}>
+                      <a
+                        href={`/products/${product.id}`}
+                        css={viewProductButtonStyles}
+                      >
+                        LEARN MORE
+                      </a>
+                    </Link>
+                  </div>
+                </a>
               </div>
             );
           })}
