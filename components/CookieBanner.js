@@ -69,6 +69,7 @@ export default function CookieBanner() {
         {isBannerOpen}
       </div>
       <button
+        data-test-id="cookie-banner"
         onClick={() => {
           setIsBannerOpen(false);
           setLocalStorage('isBannerOpen', false);

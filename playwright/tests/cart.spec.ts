@@ -2,7 +2,9 @@ import { expect, test } from '@playwright/test';
 
 test('cart test', async ({ page }) => {
   // Go to homepage and check for h1
+
   await page.goto('http://localhost:3000/');
+  await page.locator('[data-test-id="cookie-banner"]').click();
   await expect(page.locator('h1')).toHaveText('Vintage Road  Bicycles');
 
   // Click on "View Bicycles" to go to products page

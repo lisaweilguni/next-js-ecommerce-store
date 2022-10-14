@@ -2,7 +2,9 @@ import { expect, test } from '@playwright/test';
 
 test('checkout flow test', async ({ page }) => {
   // Click on product with id 1
+
   await page.goto('http://localhost:3000/products/2');
+  await page.locator('[data-test-id="cookie-banner"]').click();
   await expect(page).toHaveURL('http://localhost:3000/products/2');
 
   // Add to cart
