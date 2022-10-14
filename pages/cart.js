@@ -188,7 +188,7 @@ export default function Cart(props) {
                       <Image
                         src={`/${
                           product.id
-                        }-${product.name.toLowerCase()}).jpeg`}
+                        }-${product.name.toLowerCase()}.jpeg`}
                         alt={`Vintage Road Bicycle ${product.name}`}
                         width="181.25"
                         height="122.5"
