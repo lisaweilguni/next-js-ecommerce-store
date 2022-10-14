@@ -38,7 +38,7 @@ test('cart test', async ({ page }) => {
   await expect(page.locator('[data-test-id="product-count"]')).toHaveText('1');
   await page.locator('[data-test-id="product-count"]').click({ clickCount: 2 });
   await page.locator('button', { hasText: 'ADD TO CART' }).click();
-  await expect(page.locator('[data-test-id="product-count"]')).toHaveText('3');
+  await expect(page.locator('[data-test-id="cart-count"]')).toHaveText('3');
 
   // Go to cart page and check if product is there
   await page.locator('[data-test-id="cart-link"]').click();
