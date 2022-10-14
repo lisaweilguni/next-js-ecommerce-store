@@ -35,7 +35,7 @@ test('cart test', async ({ page }) => {
   await page
     .locator('button', { hasText: 'ADD TO CART' })
     .click({ clickCount: 1 });
-  await expect(page.locator('[data-test-id="product-count"]')).toHaveText('1');
+  await expect(page.locator('[data-test-id="cart-count"]')).toHaveText('1');
   await page
     .locator('[data-test-id="product-quantity"]')
     .click({ clickCount: 2 });
