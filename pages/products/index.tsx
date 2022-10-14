@@ -54,6 +54,9 @@ const viewProductButtonStyles = css`
   background-color: white;
   -webkit-transition: 0.2s ease-in-out;
   transition: 0.2s ease-in-out;
+  text-decoration: none;
+  color: #333333;
+  cursor: pointer;
 
   &:hover {
     background-color: black;
@@ -87,9 +90,9 @@ export default function Products(props: Props) {
           {props.products.map((product) => {
             return (
               <div key={`product-${product.id}`} css={productStyles}>
-                <a data-test-id={`product-${product.id}`}>
+                <div>
                   <Link href={`/products/${product.id}`}>
-                    <a>
+                    <a data-test-id={`product-${product.id}`}>
                       <Image
                         src={`/${
                           product.id
@@ -108,15 +111,10 @@ export default function Products(props: Props) {
                     </h2>
                     <div>EUR {product.price}</div>
                     <Link href={`/products/${product.id}`}>
-                      <a
-                        href={`/products/${product.id}`}
-                        css={viewProductButtonStyles}
-                      >
-                        LEARN MORE
-                      </a>
+                      <div css={viewProductButtonStyles}>LEARN MORE</div>
                     </Link>
                   </div>
-                </a>
+                </div>
               </div>
             );
           })}

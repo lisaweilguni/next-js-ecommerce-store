@@ -186,7 +186,9 @@ export default function Cart(props) {
                   <Link href={`/products/${product.id}`}>
                     <a data-test-id={`product-${product.id}`}>
                       <Image
-                        src={`/${product.id}-${product.name}.jpeg`}
+                        src={`/${
+                          product.id
+                        }-${product.name.toLowerCase()}).jpeg`}
                         alt={`Vintage Road Bicycle ${product.name}`}
                         width="181.25"
                         height="122.5"
@@ -261,6 +263,7 @@ export default function Cart(props) {
                       css={removeButtonStyles}
                       onClick={() => removeProduct(product.id)}
                       data-test-id={`cart-product-remove-${product.id}`}
+                      aria-label="Remove"
                     >
                       <Image src="/remove.png" alt="" width="25" height="25" />
                     </button>

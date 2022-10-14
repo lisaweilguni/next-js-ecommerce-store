@@ -65,8 +65,7 @@ export default function CookieBanner() {
     <div css={bannerStyles(isBannerOpen)}>
       <div>
         We use cookies and similar technologies on our website to ensure a
-        smooth shopping experience. Please accept our cookie policy.{' '}
-        {isBannerOpen}
+        smooth shopping experience. Please accept our cookie policy.
       </div>
       <button
         data-test-id="cookie-banner"

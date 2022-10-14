@@ -3,7 +3,8 @@ import postgres from 'postgres';
 
 // This loads all environment variables from a .env file
 // for all code after this line
-config();
+// if (!process.env.FLY_IO_BUILD) config();
+if (process.env.NODE_ENV !== 'production') config();
 
 // Type needed for the connection function below
 declare module globalThis {
