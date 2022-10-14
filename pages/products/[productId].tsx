@@ -128,7 +128,7 @@ const circleStyles = css`
   height: 16px;
 `;
 
-const hiddenSectionStyles = css`
+const quantitySectionStyles = css`
   display: flex;
   flex-direction: row;
   gap: 20px;
@@ -260,7 +260,7 @@ export default function SingleProduct(props: Props & CartState) {
             ADD TO CART
           </button>
 
-          <div css={hiddenSectionStyles}>
+          <div css={quantitySectionStyles}>
             <div css={plusMinusSectionStyles}>
               <button
                 onClick={() => {
