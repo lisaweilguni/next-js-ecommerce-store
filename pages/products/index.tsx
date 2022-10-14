@@ -92,7 +92,7 @@ export default function Products(props: Props) {
               <div key={`product-${product.id}`} css={productStyles}>
                 <div>
                   <Link href={`/products/${product.id}`}>
-                    <a data-test-id={`product-${product.id}`}>
+                    <a>
                       <Image
                         src={`/${
                           product.id
@@ -106,7 +106,9 @@ export default function Products(props: Props) {
                   <div css={productInfoSectionStyles}>
                     <h2 css={h2Styles}>
                       <Link href={`/products/${product.id}`}>
-                        <a>{product.name}</a>
+                        <a data-test-id={`product-${product.id}`}>
+                          {product.name}
+                        </a>
                       </Link>
                     </h2>
                     <div>EUR {product.price}</div>
