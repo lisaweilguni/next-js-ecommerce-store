@@ -9,7 +9,7 @@ const thankYouPageStyles = css`
   display: flex;
   align-items: center;
   background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
-    url(beach2.jpeg);
+    url(beach2_compress.jpeg);
   background-size: cover;
 `;
 
@@ -25,7 +25,6 @@ const contentSectionStyles = css`
   gap: 30px;
   padding: 40px 100px 40px 100px;
   border-radius: 4px;
-  /* margin-top: 40px; */
   line-height: 30px;
   font-size: 16px;
 

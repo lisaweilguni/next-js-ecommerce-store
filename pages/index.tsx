@@ -8,7 +8,7 @@ const heroPageLayoutStyles = css`
   z-index: 2;
   background-color: grey;
   background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
-    url(beach2.jpeg);
+    url(beach2_compress.jpeg);
   background-size: cover;
   background-position: 25% 25%;
   margin-top: 20px;
