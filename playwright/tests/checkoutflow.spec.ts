@@ -11,7 +11,7 @@ test('checkout flow test', async ({ page }) => {
   await page
     .locator('button', { hasText: 'ADD TO CART' })
     .click({ clickCount: 2 });
-  await expect(page.locator('[data-test-id="product-count"]')).toHaveText('2');
+  await expect(page.locator('[data-test-id="cart-count"]')).toHaveText('2');
 
   // Go to cart page and check if product is there
   await page.locator('[data-test-id="cart-link"]').click();
