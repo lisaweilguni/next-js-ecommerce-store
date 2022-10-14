@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import Link from 'next/link';
 
 const footerStyles = css`
   padding: 20px 20px 20px 20px;
@@ -21,7 +22,7 @@ export default function Footer() {
   return (
     <footer css={footerStyles}>
       <span>
-        © Lisa Weilguni | 2022 | <a href="/credits">Credits</a>
+        © Lisa Weilguni | 2022 | <Link href="/credits">Credits</Link>
       </span>
     </footer>
   );

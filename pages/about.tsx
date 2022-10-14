@@ -36,11 +36,6 @@ const textSectionStyles = css`
   font-size: 14px;
 `;
 
-const imageSectionStyles = css`
-  display: flex;
-  width: 40%;
-`;
-
 export default function About() {
   return (
     <div>
