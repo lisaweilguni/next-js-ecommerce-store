@@ -42,7 +42,7 @@ jobs:
       - name: Build localhost
         run: yarn build
       - name: Run localhost
-        run: yarn dev
+        run: yarn dev & npx wait-on http://localhost:3000
       - name: Run axe
         run: |
           yarn global add @axe-core/cli
