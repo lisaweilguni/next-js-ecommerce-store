@@ -274,7 +274,7 @@ export default function SingleProduct(props: Props & CartState) {
                 -
               </button>
 
-              <div data-test-id="product-count">{quantity}</div>
+              <div>{quantity}</div>
 
               <button
                 data-test-id="product-quantity"
