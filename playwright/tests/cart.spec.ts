@@ -23,7 +23,7 @@ test('cart test', async ({ page }) => {
   ];
 
   await expect(page.locator('[data-test-id^="product-"]')).toHaveCount(6);
-  await expect(page.locator('[data-test-id^="product-"] >> h2')).toHaveText(
+  await expect(page.locator('[data-test-id^="product-"]')).toHaveText(
     productNames,
   );
 
