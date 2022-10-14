@@ -13,6 +13,7 @@ const heroPageLayoutStyles = css`
   background-size: cover;
   background-position: 25% 25%;
   margin-top: 20px;
+  min-height: calc(100vh - 70px);
 `;
 
 const titleSectionStyles = css`
