@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import Head from 'next/head';
 import Link from 'next/link';
+import { getProducts } from '../database/products';
 
 const heroPageLayoutStyles = css`
   display: flex;
@@ -80,4 +81,14 @@ export default function Home() {
       </div>
     </div>
   );
+}
+
+export async function getServerSideProps() {
+  const products = await getProducts();
+
+  return {
+    props: {
+      products: products,
+    },
+  };
 }
