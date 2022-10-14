@@ -25,7 +25,7 @@ export default function Footer() {
         <span>© Lisa Weilguni | 2022 |</span>
         <Link href="/credits">
           <a>
-            <span>Credits</span>
+            <span> Credits</span>
           </a>
         </Link>
       </span>

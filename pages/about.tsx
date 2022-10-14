@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import Head from 'next/head';
+import { getProducts } from '../database/products';
 
 const mainStyles = css`
   min-height: calc(100vh - 70px);
@@ -66,4 +67,14 @@ export default function About() {
       </div>
     </div>
   );
+}
+
+export async function getServerSideProps() {
+  const products = await getProducts();
+
+  return {
+    props: {
+      products: products,
+    },
+  };
 }
