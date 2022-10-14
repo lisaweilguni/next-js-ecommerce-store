@@ -1,10 +1,11 @@
 name: Axe Tests
 on:
+  workflow_dispatch:
   push:
     branches: [main]
   pull_request:
     branches: [main]
-
+  
 jobs:
   e2e-tests:
     runs-on: ubuntu-latest # or macos-latest, windows-latest
