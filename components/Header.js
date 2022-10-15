@@ -79,8 +79,10 @@ export default function Header(props) {
         </div>
         <div css={navStyles}>
           <div css={linkHeaderStyles}>
-            <Link href="/products" data-test-id="products-link">
-              <span css={linkHeaderStyles}>Bicycles</span>
+            <Link href="/products">
+              <span css={linkHeaderStyles} data-test-id="products-link">
+                Bicycles
+              </span>
             </Link>
           </div>
           <div>
