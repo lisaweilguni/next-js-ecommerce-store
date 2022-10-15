@@ -56,8 +56,8 @@ export default function CookieBanner() {
 
   useEffect(() => {
     const initialValue = getLocalStorage('isBannerOpen');
-    if (initialValue !== null) {
-      setIsBannerOpen(JSON.parse(initialValue));
+    if (initialValue === null) {
+      setIsBannerOpen(true);
     }
   }, []);
 

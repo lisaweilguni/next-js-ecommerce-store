@@ -80,9 +80,9 @@ export default function Header(props) {
         <div css={navStyles}>
           <div css={linkHeaderStyles}>
             <Link href="/products">
-              <span css={linkHeaderStyles} data-test-id="products-link">
+              <a css={linkHeaderStyles} data-test-id="products-link">
                 Bicycles
-              </span>
+              </a>
             </Link>
           </div>
           <div>
