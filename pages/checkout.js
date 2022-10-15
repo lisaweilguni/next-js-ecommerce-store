@@ -176,7 +176,7 @@ export default function Checkout(props) {
         <Head>
           <title>Checkout</title>
           <meta
-            name="checkout"
+            name="description"
             content="Form to enter your shipping information and payment details"
           />
         </Head>

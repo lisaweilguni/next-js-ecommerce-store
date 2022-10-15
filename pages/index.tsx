@@ -63,7 +63,7 @@ export default function Home() {
       <Head>
         <title>cycleria - Vintage Bicycles</title>
         <meta
-          name="welcome"
+          name="description"
           content="Welcome to cycleria - Vintage Road Bicycles."
         />
       </Head>

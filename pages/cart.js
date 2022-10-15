@@ -165,7 +165,7 @@ export default function Cart(props) {
         <Head>
           <title>Cart</title>
           <meta
-            name="cart"
+            name="description"
             content="Overview of your shopping cart. Displaying all products in your cart and the total price"
           />
         </Head>
