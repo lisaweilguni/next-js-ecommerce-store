@@ -1,34 +1,80 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# cycleria - fictional ecommerce store
 
-## Getting Started
+## Description
 
-First, run the development server:
+cycleria is a fictional ecommerce store for vintage road bicycles.
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+Visit the deployed ecommerce shop of *cycleria* here: https://next-js-ecommerce-store.fly.dev/
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This ecommerce project is part of a web development course. It is no actual company and no purchases can be made. The site is not responsive.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## Functionalities
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+- Landing page
+- Products page where all the products are listed
+- Pages for each single product with the ability to add a quantity to the cart
+- Shopping cart page with a list of all products. This page allows the user to the ability to change the quantity, delete products and view the total price.
+- Checkout page where users input the shipping and payment information
+- Thank you page after checkout.
+- The header shows the current number of items in the cart - it also links to the shopping cart.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Technologies
 
-## Learn More
+- Next.js
+- React
+- Postgres
+- Emotion
+- Figma
+- Jest unit tests
+- Playwright E2E tests
+- Typescript
 
-To learn more about Next.js, take a look at the following resources:
+## Setup instructions
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Clone the repository with ```git clone <repo>```
+- Setup the database by downloading and installing PostgreSQL
+- Create a user and a database
+- Create a new file .env
+- Copy the environment variables from .env-example into .env
+- Replace the placeholders xxxxx with your username, password and name of database
+- Install dotenv-cli with ```yarn add dotenv-cli```
+- Run ```yarn install``` in your command line
+- Run the migrations with ```yarn migrate up```
+- Start the server by running ```yarn dev```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Deploy on fly.io
 
-## Deploy on Vercel
+- Generate a Fly.io Token, called *GitHub Actions Deploy Token* and copy the text
+- Create a new repository secret in the GitHub repo, named FLY_API_TOKEN
+- Log into Fly.io on the command line: ```flyctl auth login```
+- Create an app ```flyctl apps create --name <app name>```
+- Create the Fly.io config files
+- Add database credentials using Fly.io secrets
+`
+flyctl secrets set PGHOST=localhost PGDATABASE=$(openssl rand -hex 16) PGUSERNAME=upleveled$(openssl rand -hex 16) PGPASSWORD=$(openssl rand -base64 32)
+`
+- Create a 1GB volume for the PostgreSQL database in Frankfurt
+```flyctl volumes create postgres --size 1 --region fra```
+- Deploy: ```flyctl deploy```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Screenshots
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Landing Page
+
+![image](https://user-images.githubusercontent.com/109659918/196051644-81f77c7d-f2ab-4190-95b5-1fdc6246ceee.png)
+
+Products page
+
+![image](https://user-images.githubusercontent.com/109659918/196051678-80c9ede8-b2bc-4e7d-a44f-6f6d62256cdc.png)
+
+Single product page
+
+![image](https://user-images.githubusercontent.com/109659918/196051695-f5138b70-201d-40a0-8608-76f332bfa35b.png)
+
+Cart page
+
+![image](https://user-images.githubusercontent.com/109659918/196051726-16b9786c-bb99-444d-b98c-23d4379a1872.png)
+
+
+
+
