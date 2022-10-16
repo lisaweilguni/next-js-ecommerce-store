@@ -50,11 +50,11 @@ export default function About() {
           <div css={textSectionStyles}>
             <h1>About</h1>
             <div>
-              cycleria is a fictional ecommerce shop for vintage road bicycles
+              cycleria is a fictional ecommerce store for vintage road bicycles
               built by Lisa Weilguni. I am a passionate cyclist with a special
-              love for vintage road bikes. You might catch me cruising through
-              the streets of Vienna on my retro Puch bike or cycling through the
-              forest with my recently acquired gravel bike.
+              love for road and gravel bikes. You might catch me cruising
+              through the streets of Vienna on my retro Puch bike or cycling
+              through the forest with my recently acquired gravel bike.
             </div>
             <div>
               This application was built from scratch for learning purposes. It
