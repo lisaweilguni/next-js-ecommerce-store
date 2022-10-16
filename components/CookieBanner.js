@@ -45,14 +45,15 @@ const bannerStyles = (isOpen) => css`
 
   ${!isOpen &&
   css`
-    height: 0;
+    /* height: 0;
     padding: 0;
-    overflow: hidden;
+    overflow: hidden; */
+    display: none;
   `};
 `;
 
 export default function CookieBanner() {
-  const [isBannerOpen, setIsBannerOpen] = useState(true);
+  const [isBannerOpen, setIsBannerOpen] = useState();
 
   useEffect(() => {
     const initialValue = getLocalStorage('isBannerOpen');
