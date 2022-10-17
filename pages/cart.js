@@ -2,8 +2,9 @@ import { css } from '@emotion/react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getProducts } from '../database/products';
+import { getParsedCookie } from '../utils/cookies';
 
 const cartPageStyles = css`
   display: flex;
@@ -145,31 +146,24 @@ const priceStyles = css`
 `;
 
 export default function Cart(props) {
-  let cartWithNameAndPrice = props.cart?.map((cart) => {
-    return {
-      ...cart,
-      name: props.products.find((productObject) => cart.id === productObject.id)
-        ?.name,
-      price: props.products.find(
-        (productObject) => cart.id === productObject.id,
-      )?.price,
-    };
-  });
+  const [cartProducts, setCartProducts] = useState(props.products);
+
+  useEffect(() => {
+    const productsInCart = props.products.filter((product) => {
+      return product.quantity > 0;
+    });
+    setCartProducts(productsInCart);
+  }, [props.products]);
 
   function removeProduct(id) {
     const newCart = props.cart?.filter((item) => item.id !== id);
     props.setCart(newCart);
 
-    const newCartWithNameAndPrice = props.cart?.filter(
-      (item) => item.id !== id,
-    );
-    cartWithNameAndPrice = newCartWithNameAndPrice;
-
-    console.log('cart', newCart);
-    console.log('cart with', cartWithNameAndPrice);
+    const newCartProducts = cartProducts?.filter((item) => item.id !== id);
+    setCartProducts(newCartProducts);
   }
 
-  const cartTotalPrice = cartWithNameAndPrice?.reduce(
+  const cartTotalPrice = cartProducts?.reduce(
     (accumulator, product) => accumulator + product.price * product.quantity,
     0,
   );
@@ -190,7 +184,7 @@ export default function Cart(props) {
         {!props.cart?.length ? (
           <div>Your cart is empty</div>
         ) : (
-          cartWithNameAndPrice.map((product) => {
+          cartProducts?.map((product) => {
             return (
               <div
                 key={`product-${product.id}`}
@@ -203,7 +197,7 @@ export default function Cart(props) {
                       <Image
                         src={`/${
                           product.id
-                        }-${product.name.toLowerCase()}.jpeg`}
+                        }-${product.name?.toLowerCase()}.jpeg`}
                         alt={`Vintage Road Bicycle ${product.name}`}
                         width="181.25"
                         height="122.5"
@@ -239,6 +233,19 @@ export default function Cart(props) {
 
                         const newQuantity = [...props.cart];
                         props.setCart(newQuantity);
+
+                        // Update in cartProducts
+                        const foundProduct = cartProducts?.find(
+                          (cookieProductObject) =>
+                            cookieProductObject.id === product.id,
+                        );
+
+                        if (foundProduct.quantity > 1) {
+                          foundProduct.quantity--;
+                        }
+
+                        const newQuantityCart = [...cartProducts];
+                        setCartProducts(newQuantityCart);
                       }}
                     >
                       {' '}
@@ -252,6 +259,7 @@ export default function Cart(props) {
                     <button
                       data-test-id="product-quantity-plus"
                       onClick={() => {
+                        // update in cookie
                         const foundCookie = props.cart?.find(
                           (cookieProductObject) =>
                             cookieProductObject.id === product.id,
@@ -268,6 +276,19 @@ export default function Cart(props) {
 
                         const newQuantity = [...props.cart];
                         props.setCart(newQuantity);
+
+                        // Update in cartProducts
+                        const foundProduct = cartProducts?.find(
+                          (cookieProductObject) =>
+                            cookieProductObject.id === product.id,
+                        );
+
+                        if (foundProduct) {
+                          foundProduct.quantity++;
+                        }
+
+                        const newQuantityCart = [...cartProducts];
+                        setCartProducts(newQuantityCart);
                       }}
                     >
                       +
@@ -328,12 +349,28 @@ export default function Cart(props) {
   );
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
   const products = await getProducts();
+
+  // get the cookies from the request object and parse it if is not undefined
+  const parsedCookies = context.req.cookies.cart
+    ? JSON.parse(context.req.cookies.cart)
+    : [];
+
+  // loop over the database and add a new property called quantity with either the value in the cookies or 0
+  const productsWithQuantity = products.map((product) => {
+    return {
+      ...product,
+      quantity:
+        parsedCookies.find(
+          (cookieProductObject) => product.id === cookieProductObject.id,
+        )?.quantity || 0,
+    };
+  });
 
   return {
     props: {
-      products: products,
+      products: productsWithQuantity,
     },
   };
 }
