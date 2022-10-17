@@ -109,7 +109,9 @@ export default function Products(props: Props) {
                     </Link>
                     <div css={productInfoSectionStyles}>
                       <h2 css={h2Styles}>
-                        <a>{product.name}</a>
+                        <a data-test-id={`name-${product.id}`}>
+                          {product.name}
+                        </a>
                       </h2>
                       <div>EUR {product.price}</div>
                       {/* <Link href={`/products/${product.id}`}> */}
