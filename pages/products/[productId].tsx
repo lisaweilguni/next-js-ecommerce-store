@@ -3,7 +3,7 @@ import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
 import { getProductById, Product } from '../../database/products';
 import { parseIntFromContextQuery } from '../../utils/contextQuery';
 import { CartItem } from '../../utils/cookies';
@@ -133,6 +133,14 @@ const quantitySectionStyles = css`
   flex-direction: row;
   gap: 20px;
   justify-content: space-between;
+
+  input {
+    border: none;
+    width: 30px;
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+  }
 `;
 
 const goToCartButtonStyles = css`
@@ -274,14 +282,15 @@ export default function SingleProduct(props: Props & CartState) {
                 -
               </button>
 
-              <div>{quantity}</div>
-
-              <button
+              <input
                 data-test-id="product-quantity"
-                onClick={() => setQuantity(quantity + 1)}
-              >
-                +
-              </button>
+                value={quantity}
+                onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                  setQuantity(event.target.valueAsNumber)
+                }
+              />
+
+              <button onClick={() => setQuantity(quantity + 1)}>+</button>
             </div>
             <div>
               <Link href="/cart">

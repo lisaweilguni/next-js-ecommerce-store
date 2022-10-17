@@ -53,12 +53,12 @@ export default function Credits() {
   );
 }
 
-export async function getServerSideProps() {
-  const products = await getProducts();
+// export async function getServerSideProps() {
+//   const products = await getProducts();
 
-  return {
-    props: {
-      products: products,
-    },
-  };
-}
+//   return {
+//     props: {
+//       products: products,
+//     },
+//   };
+// }
