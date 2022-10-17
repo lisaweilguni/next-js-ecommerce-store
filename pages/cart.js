@@ -164,7 +164,7 @@ export default function Cart(props) {
     setCartProducts(newCartProducts);
 
     console.log('cart', newCart);
-    console.log('cartProducts2', newCartProducts);
+    // console.log('cartProducts2', newCartProducts);
     console.log('cartProductsState', cartProducts);
   }
 
