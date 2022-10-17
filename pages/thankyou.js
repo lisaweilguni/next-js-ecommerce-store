@@ -1,7 +1,8 @@
 import { css } from '@emotion/react';
 import Head from 'next/head';
 import Link from 'next/link';
-import { getProducts } from '../database/products';
+
+// import { getProducts } from '../database/products';
 
 const thankYouPageStyles = css`
   padding: 120px 100px;
@@ -75,12 +76,12 @@ export default function Thankyou() {
   );
 }
 
-export async function getServerSideProps() {
-  const products = await getProducts();
+// export async function getServerSideProps() {
+//   const products = await getProducts();
 
-  return {
-    props: {
-      products: products,
-    },
-  };
-}
+//   return {
+//     props: {
+//       products: products,
+//     },
+//   };
+// }

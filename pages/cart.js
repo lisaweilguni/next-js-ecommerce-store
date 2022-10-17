@@ -4,7 +4,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { getProducts } from '../database/products';
-import { getParsedCookie } from '../utils/cookies';
 
 const cartPageStyles = css`
   display: flex;
@@ -148,13 +147,12 @@ const priceStyles = css`
 export default function Cart(props) {
   const [cartProducts, setCartProducts] = useState(props.products);
 
-  // Update products displayed every time product in cart change
+  // Update products displayed every time products in cart change
   useEffect(() => {
     const productsInCart = props.products.filter((product) => {
       return product.quantity > 0;
     });
     setCartProducts(productsInCart);
-    console.log(productsInCart);
   }, [props.products]);
 
   // Remove one product
@@ -166,7 +164,8 @@ export default function Cart(props) {
     setCartProducts(newCartProducts);
 
     console.log('cart', newCart);
-    console.log('cartProducts', newCartProducts);
+    console.log('cartProducts2', newCartProducts);
+    console.log('cartProductsState', cartProducts);
   }
 
   // Calculate total price
