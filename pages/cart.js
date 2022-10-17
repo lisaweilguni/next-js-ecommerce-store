@@ -148,21 +148,28 @@ const priceStyles = css`
 export default function Cart(props) {
   const [cartProducts, setCartProducts] = useState(props.products);
 
+  // Update products displayed every time product in cart change
   useEffect(() => {
     const productsInCart = props.products.filter((product) => {
       return product.quantity > 0;
     });
     setCartProducts(productsInCart);
+    console.log(productsInCart);
   }, [props.products]);
 
+  // Remove one product
   function removeProduct(id) {
     const newCart = props.cart?.filter((item) => item.id !== id);
     props.setCart(newCart);
 
     const newCartProducts = cartProducts?.filter((item) => item.id !== id);
     setCartProducts(newCartProducts);
+
+    console.log('cart', newCart);
+    console.log('cartProducts', newCartProducts);
   }
 
+  // Calculate total price
   const cartTotalPrice = cartProducts?.reduce(
     (accumulator, product) => accumulator + product.price * product.quantity,
     0,
@@ -216,6 +223,7 @@ export default function Cart(props) {
                     <button
                       data-test-id="product-quantity-minus"
                       onClick={() => {
+                        // Update in cookie
                         const foundCookie = props.cart?.find(
                           (cookieProductObject) =>
                             cookieProductObject.id === product.id,
