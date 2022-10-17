@@ -141,6 +141,12 @@ const quantitySectionStyles = css`
     font-family: 'Montserrat', sans-serif;
     font-size: 16px;
   }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 `;
 
 const goToCartButtonStyles = css`
@@ -284,6 +290,8 @@ export default function SingleProduct(props: Props & CartState) {
 
               <input
                 data-test-id="product-quantity"
+                type="number"
+                min="1"
                 value={quantity}
                 onChange={(event: ChangeEvent<HTMLInputElement>) =>
                   setQuantity(event.target.valueAsNumber)

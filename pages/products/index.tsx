@@ -96,16 +96,13 @@ export default function Products(props: Props) {
               >
                 <a css={productStyles} data-test-id={`product-${product.id}`}>
                   <div key={`product-${product.id}`}>
-                    {/* <Link href={`/products/${product.id}`}> */}
-                    {/* <a> */}
                     <Image
                       src={`/${product.id}-${product.name.toLowerCase()}.jpeg`}
                       alt={`Vintage Road Bicycle ${product.name}`}
                       width="362.5"
                       height="245"
                     />
-                    {/* </a> */}
-                    {/* </Link> */}
+
                     <div css={productInfoSectionStyles}>
                       <h2 css={h2Styles}>
                         <div data-test-id={`name-${product.id}`}>

@@ -1,12 +1,12 @@
-# cycleria - fictional ecommerce store
+# cycleria - e-commerce store
 
 ## Description
 
-cycleria is a fictional ecommerce store for vintage road bicycles.
+cycleria is a fictional e-commerce store for vintage road bicycles.
 
-Visit the deployed ecommerce shop of *cycleria* here: https://next-js-ecommerce-store.fly.dev/
+Visit the deployed e-commerce store of _cycleria_ here: https://next-js-ecommerce-store.fly.dev/
 
-This ecommerce project is part of a web development course. It is no actual company and no purchases can be made. The site is not responsive.
+This project is part of a web development course. It is no actual company and no purchases can be made. The site is not responsive.
 
 ## Functionalities
 
@@ -31,31 +31,29 @@ This ecommerce project is part of a web development course. It is no actual comp
 
 ## Setup instructions
 
-- Clone the repository with ```git clone <repo>```
+- Clone the repository with `git clone <repo>`
 - Setup the database by downloading and installing PostgreSQL
 - Create a user and a database
 - Create a new file .env
 - Copy the environment variables from .env-example into .env
 - Replace the placeholders xxxxx with your username, password and name of database
-- Install dotenv-cli with ```yarn add dotenv-cli```
-- Run ```yarn install``` in your command line
-- Run the migrations with ```yarn migrate up```
-- Start the server by running ```yarn dev```
+- Install dotenv-cli with `yarn add dotenv-cli`
+- Run `yarn install` in your command line
+- Run the migrations with `yarn migrate up`
+- Start the server by running `yarn dev`
 
 ## Deploy on fly.io
 
-- Generate a Fly.io Token, called *GitHub Actions Deploy Token* and copy the text
+- Generate a Fly.io Token, called _GitHub Actions Deploy Token_ and copy the text
 - Create a new repository secret in the GitHub repo, named FLY_API_TOKEN
-- Log into Fly.io on the command line: ```flyctl auth login```
-- Create an app ```flyctl apps create --name <app name>```
+- Log into Fly.io on the command line: `flyctl auth login`
+- Create an app `flyctl apps create --name <app name>`
 - Create the Fly.io config files
 - Add database credentials using Fly.io secrets
-`
-flyctl secrets set PGHOST=localhost PGDATABASE=$(openssl rand -hex 16) PGUSERNAME=upleveled$(openssl rand -hex 16) PGPASSWORD=$(openssl rand -base64 32)
-`
+  `flyctl secrets set PGHOST=localhost PGDATABASE=$(openssl rand -hex 16) PGUSERNAME=upleveled$(openssl rand -hex 16) PGPASSWORD=$(openssl rand -base64 32)`
 - Create a 1GB volume for the PostgreSQL database in Frankfurt
-```flyctl volumes create postgres --size 1 --region fra```
-- Deploy: ```flyctl deploy```
+  `flyctl volumes create postgres --size 1 --region fra`
+- Deploy: `flyctl deploy`
 
 ## Screenshots
 
@@ -74,7 +72,3 @@ Single product page
 Cart page
 
 ![image](https://user-images.githubusercontent.com/109659918/196051726-16b9786c-bb99-444d-b98c-23d4379a1872.png)
-
-
-
-
