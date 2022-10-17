@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState } from 'react';
 import { getProducts } from '../database/products';
 
 const cartPageStyles = css`
@@ -144,7 +145,7 @@ const priceStyles = css`
 `;
 
 export default function Cart(props) {
-  const cartWithNameAndPrice = props.cart?.map((cart) => {
+  let cartWithNameAndPrice = props.cart?.map((cart) => {
     return {
       ...cart,
       name: props.products.find((productObject) => cart.id === productObject.id)
@@ -155,15 +156,23 @@ export default function Cart(props) {
     };
   });
 
+  function removeProduct(id) {
+    const newCart = props.cart?.filter((item) => item.id !== id);
+    props.setCart(newCart);
+
+    const newCartWithNameAndPrice = props.cart?.filter(
+      (item) => item.id !== id,
+    );
+    cartWithNameAndPrice = newCartWithNameAndPrice;
+
+    console.log('cart', newCart);
+    console.log('cart with', cartWithNameAndPrice);
+  }
+
   const cartTotalPrice = cartWithNameAndPrice?.reduce(
     (accumulator, product) => accumulator + product.price * product.quantity,
     0,
   );
-
-  function removeProduct(id) {
-    const newCart = props.cart?.filter((item) => item.id !== id);
-    props.setCart(newCart);
-  }
 
   return (
     <div css={cartPageStyles}>
