@@ -207,7 +207,7 @@ export default function Cart(props) {
 
                   <div css={productPriceStyles}>
                     <div>EUR</div>
-                    <div>{product.price}</div>
+                    <div>{product.price * product.quantity}</div>
                   </div>
                   <div css={plusMinusSectionStyles}>
                     <button
