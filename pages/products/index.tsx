@@ -24,6 +24,7 @@ const productStyles = css`
   padding: 20px;
   -webkit-transition: 0.2s ease-in-out;
   transition: 0.2s ease-in-out;
+  cursor: pointer;
 
   h2 {
     margin-top: 0;
@@ -93,33 +94,31 @@ export default function Products(props: Props) {
                 key={`product-${product.id}`}
                 href={`/products/${product.id}`}
               >
-                <div css={productStyles} data-test-id={`product-${product.id}`}>
-                  <div>
-                    <Link href={`/products/${product.id}`}>
-                      <a>
-                        <Image
-                          src={`/${
-                            product.id
-                          }-${product.name.toLowerCase()}.jpeg`}
-                          alt={`Vintage Road Bicycle ${product.name}`}
-                          width="362.5"
-                          height="245"
-                        />
-                      </a>
-                    </Link>
+                <a css={productStyles} data-test-id={`product-${product.id}`}>
+                  <div key={`product-${product.id}`}>
+                    {/* <Link href={`/products/${product.id}`}> */}
+                    {/* <a> */}
+                    <Image
+                      src={`/${product.id}-${product.name.toLowerCase()}.jpeg`}
+                      alt={`Vintage Road Bicycle ${product.name}`}
+                      width="362.5"
+                      height="245"
+                    />
+                    {/* </a> */}
+                    {/* </Link> */}
                     <div css={productInfoSectionStyles}>
                       <h2 css={h2Styles}>
-                        <a data-test-id={`name-${product.id}`}>
+                        <div data-test-id={`name-${product.id}`}>
                           {product.name}
-                        </a>
+                        </div>
                       </h2>
                       <div>EUR {product.price}</div>
-                      {/* <Link href={`/products/${product.id}`}> */}
-                      <div css={viewProductButtonStyles}>LEARN MORE</div>
-                      {/* </Link> */}
+                      <Link href={`/products/${product.id}`}>
+                        <div css={viewProductButtonStyles}>LEARN MORE</div>
+                      </Link>
                     </div>
                   </div>
-                </div>
+                </a>
               </Link>
             );
           })}
