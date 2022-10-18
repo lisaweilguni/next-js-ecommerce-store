@@ -72,3 +72,8 @@ Single product page
 Cart page
 
 ![image](https://user-images.githubusercontent.com/109659918/196051726-16b9786c-bb99-444d-b98c-23d4379a1872.png)
+
+Design System in Figma
+
+![image](https://user-images.githubusercontent.com/109659918/196392595-1e3fbca2-cb91-4d41-930a-27a065fee953.png)
+
