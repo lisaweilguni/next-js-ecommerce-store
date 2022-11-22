@@ -6,7 +6,7 @@ cycleria is a fictional e-commerce store for vintage road bicycles.
 
 Visit the deployed e-commerce store of _cycleria_ here: https://next-js-ecommerce-store.fly.dev/
 
-This project is part of a web development course. It is no actual company and no purchases can be made. The site is not responsive.
+This app is no actual company and no purchases can be made. The site is not responsive.
 
 ![image](https://user-images.githubusercontent.com/109659918/196051644-81f77c7d-f2ab-4190-95b5-1fdc6246ceee.png)
 
