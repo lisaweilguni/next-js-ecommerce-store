@@ -8,6 +8,8 @@ Visit the deployed e-commerce store of _cycleria_ here: https://next-js-ecommerc
 
 This project is part of a web development course. It is no actual company and no purchases can be made. The site is not responsive.
 
+![image](https://user-images.githubusercontent.com/109659918/196051644-81f77c7d-f2ab-4190-95b5-1fdc6246ceee.png)
+
 ## Functionalities
 
 - Landing page
@@ -56,10 +58,6 @@ This project is part of a web development course. It is no actual company and no
 - Deploy: `flyctl deploy`
 
 ## Screenshots
-
-Landing Page
-
-![image](https://user-images.githubusercontent.com/109659918/196051644-81f77c7d-f2ab-4190-95b5-1fdc6246ceee.png)
 
 Products page
 
