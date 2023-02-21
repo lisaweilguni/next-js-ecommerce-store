@@ -67,18 +67,22 @@ export default function Header(props) {
       <nav css={headerStyles}>
         <div css={logoStyles}>
           <Link href="/">
-            <Image
-              src="/logo.jpeg"
-              alt="cart symbol"
-              width="135.3"
-              height="44.66"
-            />
+            <a>
+              <Image
+                src="/logo.jpeg"
+                alt="cart symbol"
+                width="135.3"
+                height="44.66"
+              />
+            </a>
           </Link>
         </div>
         <div css={navStyles}>
           <div css={linkHeaderStyles}>
-            <Link href="/products" data-test-id="products-link">
-              <span css={linkHeaderStyles}>Bicycles</span>
+            <Link href="/products">
+              <a css={linkHeaderStyles} data-test-id="products-link">
+                Bicycles
+              </a>
             </Link>
           </div>
           <div>

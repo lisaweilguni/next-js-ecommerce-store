@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import Head from 'next/head';
 import Link from 'next/link';
+import { getProducts } from '../database/products';
 
 const heroPageLayoutStyles = css`
   display: flex;
@@ -12,6 +13,7 @@ const heroPageLayoutStyles = css`
   background-size: cover;
   background-position: 25% 25%;
   margin-top: 20px;
+  min-height: calc(100vh - 70px);
 `;
 
 const titleSectionStyles = css`
@@ -61,7 +63,7 @@ export default function Home() {
       <Head>
         <title>cycleria - Vintage Bicycles</title>
         <meta
-          name="welcome"
+          name="description"
           content="Welcome to cycleria - Vintage Road Bicycles."
         />
       </Head>
@@ -80,4 +82,14 @@ export default function Home() {
       </div>
     </div>
   );
+}
+
+export async function getServerSideProps() {
+  const products = await getProducts();
+
+  return {
+    props: {
+      products: products,
+    },
+  };
 }

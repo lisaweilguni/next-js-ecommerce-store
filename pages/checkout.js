@@ -146,6 +146,12 @@ const productSumTotalStyles = css`
   padding-top: 15px;
 `;
 
+const priceStyles = css`
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+`;
+
 export default function Checkout(props) {
   const cartWithNameAndPrice = props.cart?.map((cart) => {
     return {
@@ -176,7 +182,7 @@ export default function Checkout(props) {
         <Head>
           <title>Checkout</title>
           <meta
-            name="checkout"
+            name="description"
             content="Form to enter your shipping information and payment details"
           />
         </Head>
@@ -276,15 +282,26 @@ export default function Checkout(props) {
         <h2>Summary</h2>
         <div css={productSumStyles}>
           <div>Subtotal</div>
-          <div>{!props.cart?.length ? 0 : cartTotalPrice}</div>
+          <div css={priceStyles}>
+            <div data-test-id="cart-total">
+              {!props.cart?.length ? 0 : cartTotalPrice}
+            </div>
+            <div>€</div>
+          </div>
         </div>
         <div css={productSumStyles}>
           <div>Shipping</div>
-          <div>{!props.cart?.length ? 0 : 29.99}</div>
+          <div css={priceStyles}>
+            <div>{!props.cart?.length ? 0 : 29.99}</div>
+            <div>€</div>
+          </div>
         </div>
         <div css={productSumTotalStyles}>
           <div>Total</div>
-          <div>{!props.cart?.length ? 0 : cartTotalPrice + 29.99}</div>
+          <div css={priceStyles}>
+            <div>{!props.cart?.length ? 0 : cartTotalPrice + 29.99}</div>
+            <div>€</div>
+          </div>
         </div>
       </div>
     </div>

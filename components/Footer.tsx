@@ -22,7 +22,12 @@ export default function Footer() {
   return (
     <footer css={footerStyles}>
       <span>
-        © Lisa Weilguni | 2022 | <Link href="/credits">Credits</Link>
+        <span>© Lisa Weilguni | 2022 |</span>
+        <Link href="/credits">
+          <a>
+            <span> Credits</span>
+          </a>
+        </Link>
       </span>
     </footer>
   );

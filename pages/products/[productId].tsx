@@ -3,7 +3,7 @@ import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
 import { getProductById, Product } from '../../database/products';
 import { parseIntFromContextQuery } from '../../utils/contextQuery';
 import { CartItem } from '../../utils/cookies';
@@ -67,7 +67,7 @@ const smallHeadingAddOnStyles = css`
   margin-bottom: 0;
 `;
 
-const plusMinusSectionStyles = (showCounter: boolean) => css`
+const plusMinusSectionStyles = css`
   display: flex;
   flex-direction: row;
   gap: 15px;
@@ -91,14 +91,6 @@ const plusMinusSectionStyles = (showCounter: boolean) => css`
     cursor: pointer;
     padding: 0;
   }
-
-  ${!showCounter &&
-  css`
-    height: 0;
-    padding: 0;
-    overflow: hidden;
-    border: none;
-  `};
 `;
 
 const productPriceStyles = css`
@@ -136,19 +128,25 @@ const circleStyles = css`
   height: 16px;
 `;
 
-const hiddenSectionStyles = (showButton: boolean) => css`
+const quantitySectionStyles = css`
   display: flex;
   flex-direction: row;
   gap: 20px;
   justify-content: space-between;
 
-  ${!showButton &&
-  css`
-    height: 0;
-    padding: 0;
-    overflow: hidden;
+  input {
     border: none;
-  `};
+    width: 30px;
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+  }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 `;
 
 const goToCartButtonStyles = css`
@@ -188,8 +186,7 @@ type CartState = {
 type Props = { product: Product } | { error: string };
 
 export default function SingleProduct(props: Props & CartState) {
-  const [showCounter, setShowCounter] = useState(false);
-  const [showButton, setShowButton] = useState(false);
+  const [quantity, setQuantity] = useState<number>(1);
 
   if ('error' in props) {
     return (
@@ -251,13 +248,11 @@ export default function SingleProduct(props: Props & CartState) {
             css={addToCartButtonStyles}
             data-test-id="product-add-to-cart"
             onClick={() => {
-              setShowCounter(true);
-              setShowButton(true);
               if (!props.cart) {
                 props.setCart([
                   {
                     id: props.product.id,
-                    quantity: 1,
+                    quantity: quantity,
                   },
                 ]);
                 return;
@@ -266,10 +261,10 @@ export default function SingleProduct(props: Props & CartState) {
               if (!foundCookie) {
                 props.cart.push({
                   id: props.product.id,
-                  quantity: 1,
+                  quantity: quantity,
                 });
               } else {
-                foundCookie.quantity++;
+                foundCookie.quantity = foundCookie.quantity + quantity;
               }
 
               const newQuantity = [...props.cart];
@@ -279,69 +274,31 @@ export default function SingleProduct(props: Props & CartState) {
             ADD TO CART
           </button>
 
-          <div css={hiddenSectionStyles(showButton)}>
-            <div css={plusMinusSectionStyles(showCounter)}>
+          <div css={quantitySectionStyles}>
+            <div css={plusMinusSectionStyles}>
               <button
                 onClick={() => {
-                  if (!props.cart) {
-                    props.setCart([
-                      {
-                        id: props.product.id,
-                        quantity: -1,
-                      },
-                    ]);
-                    return;
-                  }
-
-                  if (!foundCookie) {
-                    props.cart.push({
-                      id: props.product.id,
-                      quantity: -1,
-                    });
-                  } else if (foundCookie.quantity > 1) {
-                    foundCookie.quantity--;
-                  }
-
-                  const newQuantity = [...props.cart];
-                  props.setCart(newQuantity);
-                }}
-              >
-                {' '}
-                -{' '}
-              </button>
-
-              <div data-test-id="product-count">
-                {foundCookie ? foundCookie.quantity : 1}
-              </div>
-
-              <button
-                data-test-id="product-quantity"
-                onClick={() => {
-                  if (!props.cart) {
-                    props.setCart([
-                      {
-                        id: props.product.id,
-                        quantity: 1,
-                      },
-                    ]);
-                    return;
-                  }
-
-                  if (!foundCookie) {
-                    props.cart.push({
-                      id: props.product.id,
-                      quantity: 1,
-                    });
+                  if (quantity < 1) {
+                    return 1;
                   } else {
-                    foundCookie.quantity++;
+                    setQuantity(quantity - 1);
                   }
-
-                  const newQuantity = [...props.cart];
-                  props.setCart(newQuantity);
                 }}
               >
-                +
+                -
               </button>
+
+              <input
+                data-test-id="product-quantity"
+                type="number"
+                min="1"
+                value={quantity}
+                onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                  setQuantity(event.target.valueAsNumber)
+                }
+              />
+
+              <button onClick={() => setQuantity(quantity + 1)}>+</button>
             </div>
             <div>
               <Link href="/cart">

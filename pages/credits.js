@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import Head from 'next/head';
+import { getProducts } from '../database/products';
 
 const creditsPageStyles = css`
   padding: 120px 100px;
@@ -27,7 +28,7 @@ export default function Credits() {
     <div css={creditsPageStyles}>
       <Head>
         <title>Credits</title>
-        <meta name="credits" content="Credits for images and icons" />
+        <meta name="description" content="Credits for images and icons" />
       </Head>
       <h1>Credits</h1>
       <div css={creditStyles}>
@@ -50,4 +51,14 @@ export default function Credits() {
       </div>
     </div>
   );
+}
+
+export async function getServerSideProps() {
+  const products = await getProducts();
+
+  return {
+    props: {
+      products: products,
+    },
+  };
 }

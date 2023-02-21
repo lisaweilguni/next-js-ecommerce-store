@@ -23,7 +23,7 @@ test('cart test', async ({ page }) => {
   ];
 
   await expect(page.locator('[data-test-id^="product-"]')).toHaveCount(6);
-  await expect(page.locator('[data-test-id^="product-"] >> h2')).toHaveText(
+  await expect(page.locator('[data-test-id^="name-"]')).toHaveText(
     productNames,
   );
 
@@ -35,11 +35,12 @@ test('cart test', async ({ page }) => {
   await page
     .locator('button', { hasText: 'ADD TO CART' })
     .click({ clickCount: 1 });
-  await expect(page.locator('[data-test-id="product-count"]')).toHaveText('1');
-  await page
-    .locator('button', { hasText: 'ADD TO CART' })
-    .click({ clickCount: 2 });
-  await expect(page.locator('[data-test-id="product-count"]')).toHaveText('3');
+  await expect(page.locator('[data-test-id="cart-count"]')).toHaveText('1');
+  // await page
+  //   .locator('[data-test-id="product-quantity"]')
+  //   .click({ clickCount: 2 });
+  await page.locator('button', { hasText: 'ADD TO CART' }).click();
+  await expect(page.locator('[data-test-id="cart-count"]')).toHaveText('2');
 
   // Go to cart page and check if product is there
   await page.locator('[data-test-id="cart-link"]').click();
@@ -47,7 +48,7 @@ test('cart test', async ({ page }) => {
   await expect(page.locator('[data-test-id="cart-product-1"]')).toBeVisible;
   await expect(
     page.locator('[data-test-id="cart-product-quantity-1"]'),
-  ).toHaveText('3');
+  ).toHaveText('2');
 
   // Remove from cart
   await page.locator('[data-test-id="cart-product-remove-1"]').click();
